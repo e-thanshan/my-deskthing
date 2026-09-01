@@ -1,5 +1,9 @@
 # dash
 
+## 0.6.0
+
+the photo comes alive: webgl warp drifts the clouds and sways trees and grass
+
 ## 0.5.1
 
 stop truncation from clipping serif descenders

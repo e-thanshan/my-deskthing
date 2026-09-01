@@ -1,5 +1,6 @@
 import background from '../assets/background.jpg';
 import { CottageScene } from './CottageScene';
+import { LivePhoto } from './LivePhoto';
 
 // ---------------------------------------------------------------------------
 // custom background image
@@ -16,11 +17,19 @@ import { CottageScene } from './CottageScene';
 // ---------------------------------------------------------------------------
 const BACKGROUND_IMAGE: string | null = background;
 
+// false renders the image as a plain still; true warps it gently in webgl
+// (drifting clouds, swaying foliage), falling back to the still on any failure
+const ANIMATE_BACKGROUND = true;
+
 export function Backdrop() {
   return (
     <div aria-hidden className="absolute inset-0">
       {BACKGROUND_IMAGE ? (
-        <img src={BACKGROUND_IMAGE} alt="" className="h-full w-full object-cover" />
+        ANIMATE_BACKGROUND ? (
+          <LivePhoto src={BACKGROUND_IMAGE} />
+        ) : (
+          <img src={BACKGROUND_IMAGE} alt="" className="h-full w-full object-cover" />
+        )
       ) : (
         <CottageScene />
       )}
