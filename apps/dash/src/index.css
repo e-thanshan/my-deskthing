@@ -27,6 +27,7 @@
   --color-err: #dc3d3d;
   --color-warn: #ff7070;
   --color-experimental: #ffb066;
+  --color-ember: #e8963f;
 
   --color-rule: color-mix(in srgb, var(--color-fg) 10%, transparent);
   --color-rule-strong: color-mix(in srgb, var(--color-fg) 15%, transparent);

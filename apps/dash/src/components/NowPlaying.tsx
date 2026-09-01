@@ -4,23 +4,21 @@ export function NowPlaying({ conn, track }: { conn: ConnectionState; track: Medi
   if (!track) {
     const open = conn === 'open';
     return (
-      <div className="flex flex-col gap-3">
-        <div className="font-mono text-eyebrow tracking-[0.25em] text-dim uppercase">
+      <div className="flex min-w-0 flex-col gap-1.5 [text-shadow:0_1px_10px_rgba(0,0,0,0.55)]">
+        <div className="truncate font-mono text-eyebrow tracking-[0.25em] text-off-white/70 uppercase">
           {open ? 'nothing playing' : 'connecting'}
         </div>
-        <div className="text-title text-soft">
+        <div className="truncate text-title text-off-white/85">
           {open ? 'play something on your phone' : 'waiting for the device'}
         </div>
       </div>
     );
   }
   return (
-    <div className="flex flex-col gap-2">
-      <div className="line-clamp-2 font-display text-5xl font-medium leading-tight tracking-display">
-        {track.title ?? 'unknown'}
-      </div>
-      <div className="text-2xl text-soft">{track.artist ?? ''}</div>
-      {track.album && <div className="font-mono text-hint text-dim">{track.album}</div>}
+    <div className="flex min-w-0 flex-col gap-0.5 [text-shadow:0_1px_10px_rgba(0,0,0,0.55)]">
+      <div className="truncate font-display text-3xl font-semibold tracking-display">{track.title ?? 'unknown'}</div>
+      <div className="truncate text-xl text-off-white/85">{track.artist ?? ''}</div>
+      {track.album && <div className="truncate font-mono text-hint text-off-white/60">{track.album}</div>}
     </div>
   );
 }
