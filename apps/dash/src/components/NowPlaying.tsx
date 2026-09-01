@@ -8,7 +8,7 @@ export function NowPlaying({ conn, track }: { conn: ConnectionState; track: Medi
         <div className="truncate font-mono text-eyebrow tracking-[0.25em] text-off-white/70 uppercase">
           {open ? 'nothing playing' : 'connecting'}
         </div>
-        <div className="truncate text-title text-off-white/85">{open && 'waiting for the device'}</div>
+        <div className="truncate text-title text-off-white/85">{!open && 'waiting for the device'}</div>
       </div>
     );
   }

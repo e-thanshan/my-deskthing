@@ -1,5 +1,9 @@
 # dash
 
+## 0.6.2
+
+show the waiting hint while connecting, not after
+
 ## 0.6.1
 
 remove the retired painted-scene code; artist and album share one line
