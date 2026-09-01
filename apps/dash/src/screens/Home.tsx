@@ -7,7 +7,7 @@ import { usePlayer } from '../hooks/usePlayer';
 
 export default function Home() {
   const conn = useConnection();
-  const { track, positionMs, durationMs } = usePlayer();
+  const { track, positionMs, durationMs, playing } = usePlayer();
 
   return (
     <div className="relative h-full w-full overflow-hidden bg-bg text-off-white">
@@ -24,7 +24,7 @@ export default function Home() {
           </div>
         </div>
         <div className="flex-1" />
-        <ProgressBar positionMs={positionMs} durationMs={durationMs} />
+        <ProgressBar positionMs={positionMs} durationMs={durationMs} playing={playing} />
       </div>
     </div>
   );
