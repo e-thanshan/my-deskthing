@@ -17,6 +17,14 @@
 }
 
 @font-face {
+  font-family: 'Fraunces Variable';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: block;
+  src: url('./fonts/Fraunces-Variable.woff2') format('woff2-variations');
+}
+
+@font-face {
   font-family: 'TeX Gyre Bonum';
   font-style: normal;
   font-weight: 400;
@@ -70,6 +78,7 @@
 
   --font-display: "Outfit", system-ui, sans-serif;
   --font-book: "TeX Gyre Bonum", Georgia, "Times New Roman", serif;
+  --font-clock: "Fraunces Variable", "TeX Gyre Bonum", Georgia, serif;
   --font-body: "Inter", system-ui, sans-serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 

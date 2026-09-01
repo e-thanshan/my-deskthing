@@ -10,7 +10,15 @@ const H = 480;
 const VS = `attribute vec2 p; varying vec2 vUv;
 void main(){ vUv = vec2(p.x*0.5+0.5, 0.5-p.y*0.5); gl_Position = vec4(p,0.,1.); }`;
 
-const FS = `precision mediump float;
+// mali honors mediump as fp16, whose spacing passes the frame delta within
+// minutes and freezes the motion, so time math must be highp. uT also wraps
+// at 120s on the cpu (frequencies are exact multiples of 2pi/120, so the
+// loop is seamless) to stay small across days of kiosk uptime.
+const FS = `#ifdef GL_FRAGMENT_PRECISION_HIGH
+precision highp float;
+#else
+precision mediump float;
+#endif
 varying vec2 vUv;
 uniform sampler2D uPhoto, uMask;
 uniform vec2 uScale, uOffset;
@@ -22,8 +30,8 @@ void main(){
   cloud *= smoothstep(0.0, 0.06, vUv.x) * smoothstep(1.0, 0.94, vUv.x);
   float ph = vUv.x*17.0 + vUv.y*9.0;
   vec2 off = vec2(0.0);
-  off.x += sway * uAmp * (1.4*sin(uT*1.05 + ph) + 0.6*sin(uT*2.3 + ph*1.7)) * (2.6/800.0);
-  off.y += sway * uAmp * 0.8*sin(uT*0.9 + ph*1.3) * (1.2/480.0);
+  off.x += sway * uAmp * (1.4*sin(uT*1.0472 + ph) + 0.6*sin(uT*2.30383 + ph*1.7)) * (2.6/800.0);
+  off.y += sway * uAmp * 0.8*sin(uT*0.89012 + ph*1.3) * (1.2/480.0);
   off.x += cloud * (14.0/800.0) * uAmp * sin(uT*0.10472);
   vec2 uv = (vUv + off) * uScale + uOffset;
   vec4 c = texture2D(uPhoto, uv);
@@ -153,16 +161,18 @@ export function LivePhoto({ src }: { src: string }) {
       const q = new URLSearchParams(location.search);
       gl.uniform1f(gl.getUniformLocation(prog, 'uAmp'), Number(q.get('amp') ?? '1') || 1);
       gl.uniform1f(gl.getUniformLocation(prog, 'uDebug'), q.has('mask') ? 1 : 0);
+      const t0 = Number(q.get('t0') ?? '0') || 0;
       const uT = gl.getUniformLocation(prog, 'uT');
 
       gl.viewport(0, 0, W, H);
+      const LOOP = 120;
       let last = 0;
       const frame = (now: number) => {
         raf = requestAnimationFrame(frame);
         // 30fps is plenty for slow drift and halves the gpu load
         if (now - last < 31) return;
         last = now;
-        gl.uniform1f(uT, now / 1000);
+        gl.uniform1f(uT, (now / 1000 + t0) % LOOP);
         gl.drawArrays(gl.TRIANGLES, 0, 3);
         (window as { __lpFrames?: number }).__lpFrames = ((window as { __lpFrames?: number }).__lpFrames ?? 0) + 1;
       };

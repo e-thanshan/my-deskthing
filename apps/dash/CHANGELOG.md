@@ -1,5 +1,9 @@
 # dash
 
+## 0.8.0
+
+fix motion stutter after minutes (fp16 time precision); Fraunces clock; darker lyric scrim
+
 ## 0.7.0
 
 preset 4 toggles a two-line live lyric above the progress bar
