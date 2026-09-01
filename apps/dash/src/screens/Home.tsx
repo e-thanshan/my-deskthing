@@ -15,7 +15,7 @@ export default function Home() {
 
   const [lyricsOn, setLyricsOn] = useState(false);
   const { status, lines } = useLyrics(trackKey, lyricsOn);
-  const [flash, setFlash] = useState(0);
+  const [flash, setFlash] = useState<{ n: number; text: string } | null>(null);
 
   useEffect(() => {
     // preset button 4 toggles the live lyric
@@ -27,10 +27,19 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (lyricsOn && status === 'none') setFlash(n => n + 1);
+    if (!lyricsOn) return;
+    const text =
+      status === 'none'
+        ? 'No lyrics available'
+        : status === 'plain'
+          ? 'Lyrics not synced for this song'
+          : status === 'error'
+            ? "Couldn't fetch lyrics"
+            : null;
+    if (text) setFlash(f => ({ n: (f?.n ?? 0) + 1, text }));
   }, [lyricsOn, status, trackKey]);
 
-  const lyricsShowing = (lyricsOn && status === 'ready') || flash > 0;
+  const lyricsShowing = (lyricsOn && status === 'ready') || flash != null;
 
   return (
     <div className="relative h-full w-full overflow-hidden bg-bg text-off-white">
@@ -51,12 +60,12 @@ export default function Home() {
         </div>
         <div className="flex-1" />
         {lyricsOn && status === 'ready' && lines && <Lyrics lines={lines} positionMs={positionMs} />}
-        {flash > 0 && (
+        {flash && (
           <div
-            key={flash}
-            onAnimationEnd={() => setFlash(0)}
+            key={flash.n}
+            onAnimationEnd={() => setFlash(null)}
             className="mb-3 truncate font-book text-lg text-off-white/75 [text-shadow:0_1px_8px_rgba(0,0,0,0.6)] animate-[fade-out-hold_1.6s_ease-out_forwards]">
-            No lyrics available
+            {flash.text}
           </div>
         )}
         <ProgressBar positionMs={positionMs} durationMs={durationMs} playing={playing} />

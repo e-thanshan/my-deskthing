@@ -1,5 +1,9 @@
 # dash
 
+## 0.8.2
+
+failed lyric lookups retry instead of caching as none; distinct unsynced/error messages
+
 ## 0.8.1
 
 song details set in Fraunces italic
