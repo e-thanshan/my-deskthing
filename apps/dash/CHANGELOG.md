@@ -1,5 +1,9 @@
 # dash
 
+## 0.5.1
+
+stop truncation from clipping serif descenders
+
 ## 0.5.0
 
 song details set in TeX Gyre Bonum (bundled, GUST license); album line italic
