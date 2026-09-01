@@ -1,5 +1,9 @@
 # dash
 
+## 0.7.0
+
+preset 4 toggles a two-line live lyric above the progress bar
+
 ## 0.6.2
 
 show the waiting hint while connecting, not after

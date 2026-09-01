@@ -80,6 +80,16 @@
   --radius-none: 0;
 }
 
+@keyframes fade-out-hold {
+  0%,
+  55% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 @layer base {
   :root {
     color-scheme: dark;
