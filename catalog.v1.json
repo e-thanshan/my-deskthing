@@ -1,0 +1,42 @@
+{
+  "$schema": "https://apps.bridgething.com/schemas/catalog/v1.json",
+  "schema": "catalog.v1",
+  "updated_at": "2026-09-01T17:49:29.713Z",
+  "repo": {
+    "name": "Eshan's Car Thing Apps",
+    "description": "Webapps for Eshan's Spotify Car Thing.",
+    "homepage": "https://github.com/e-thanshan/my-deskthing",
+    "icon": null
+  },
+  "apps": [
+    {
+      "id": "01a05e05-e70d-7273-8674-39fe176819b2",
+      "name": "dash",
+      "description": "A clean dashboard: clock, now playing, and dial-controlled volume.",
+      "author": "Ethan Shan",
+      "icon": null,
+      "homepage": "https://github.com/e-thanshan/my-deskthing",
+      "source": "https://github.com/e-thanshan/my-deskthing",
+      "versions": [
+        {
+          "version": "0.1.0",
+          "released_at": "2026-09-01T17:49:29.709Z",
+          "download": {
+            "url": "https://e-thanshan.github.io/my-deskthing/r/01a05e05-e70d-7273-8674-39fe176819b2/0.1.0.zip",
+            "size": 812549,
+            "sha256": "59742996a6b85cff638a27cdd9bf6af20dcbf60d3af4582a7920e8e9802ecbda"
+          },
+          "settings": {
+            "url": "https://e-thanshan.github.io/my-deskthing/s/01a05e05-e70d-7273-8674-39fe176819b2/0.1.0.html",
+            "size": 26911,
+            "sha256": "ac6b1d3b7c3857f8b6e87cb2a04f4623abaf200ecade3e2035489f747162b683"
+          },
+          "permissions": [],
+          "min_libbridgething_version": "0.12.1",
+          "changelog": "First release."
+        }
+      ]
+    }
+  ],
+  "recommended_sources": []
+}
