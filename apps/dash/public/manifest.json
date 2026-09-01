@@ -1,0 +1,10 @@
+{
+  "id": "01a05e05-e70d-7273-8674-39fe176819b2",
+  "name": "dash",
+  "version": "0.1.0",
+  "description": "A clean dashboard: clock, now playing, and dial-controlled volume.",
+  "settings": "settings.html",
+  "config": [],
+  "permissions": [],
+  "art": { "heroPx": 248, "thumbPx": 96 }
+}
