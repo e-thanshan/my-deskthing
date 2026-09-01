@@ -16,6 +16,30 @@
   src: url("./fonts/Inter-Variable.ttf") format("truetype-variations");
 }
 
+@font-face {
+  font-family: 'TeX Gyre Bonum';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('./fonts/texgyrebonum-regular.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'TeX Gyre Bonum';
+  font-style: normal;
+  font-weight: 700;
+  font-display: block;
+  src: url('./fonts/texgyrebonum-bold.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'TeX Gyre Bonum';
+  font-style: italic;
+  font-weight: 400;
+  font-display: block;
+  src: url('./fonts/texgyrebonum-italic.otf') format('opentype');
+}
+
 @theme {
   --color-off-white: #efefef;
   --color-bg: #0a0c0e;
@@ -53,6 +77,7 @@
   --text-screen-title: 2.125rem;
 
   --font-display: "Outfit", system-ui, sans-serif;
+  --font-book: "TeX Gyre Bonum", Georgia, "Times New Roman", serif;
   --font-body: "Inter", system-ui, sans-serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 

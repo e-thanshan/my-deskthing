@@ -16,11 +16,11 @@ export function NowPlaying({ conn, track }: { conn: ConnectionState; track: Medi
   }
   return (
     <div className="flex min-w-0 flex-col gap-1 [text-shadow:0_1px_10px_rgba(0,0,0,0.55)]">
-      <div className="truncate font-display text-[42px] leading-[1.1] font-semibold tracking-display">
+      <div className="truncate font-book text-[42px] leading-[1.1] font-bold tracking-tight-1">
         {track.title ?? 'unknown'}
       </div>
-      <div className="truncate text-2xl text-off-white/85">{track.artist ?? ''}</div>
-      {track.album && <div className="truncate font-mono text-row text-off-white/60">{track.album}</div>}
+      <div className="truncate font-book text-2xl text-off-white/85">{track.artist ?? ''}</div>
+      {track.album && <div className="truncate font-book text-base italic text-off-white/60">{track.album}</div>}
     </div>
   );
 }

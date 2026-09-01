@@ -1,5 +1,9 @@
 # dash
 
+## 0.5.0
+
+song details set in TeX Gyre Bonum (bundled, GUST license); album line italic
+
 ## 0.4.1
 
 paused playback dims the progress bar fill
