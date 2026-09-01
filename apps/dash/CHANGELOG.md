@@ -1,5 +1,9 @@
 # dash
 
+## 0.8.1
+
+song details set in Fraunces italic
+
 ## 0.8.0
 
 fix motion stutter after minutes (fp16 time precision); Fraunces clock; darker lyric scrim

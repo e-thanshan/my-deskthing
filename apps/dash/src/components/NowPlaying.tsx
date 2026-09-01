@@ -13,11 +13,11 @@ export function NowPlaying({ conn, track }: { conn: ConnectionState; track: Medi
     );
   }
   return (
-    <div className="flex min-w-0 flex-col gap-1 [text-shadow:0_1px_10px_rgba(0,0,0,0.55)]">
-      <div className="truncate pb-[0.12em] font-book text-[42px] leading-[1.15] font-bold tracking-tight-1">
+    <div className="flex min-w-0 flex-col gap-1 font-clock italic [font-variation-settings:'SOFT'_100,'WONK'_1] [text-shadow:0_1px_10px_rgba(0,0,0,0.55)]">
+      <div className="truncate pb-[0.12em] text-[42px] leading-[1.15] font-bold tracking-tight-1">
         {track.title ?? 'unknown'}
       </div>
-      <div className="truncate pb-[0.12em] font-book text-2xl text-off-white/85">
+      <div className="truncate pb-[0.12em] text-2xl text-off-white/85">
         {track.artist ?? ''}
         {track.album && `, ${track.album}`}
       </div>

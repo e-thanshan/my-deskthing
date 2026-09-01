@@ -25,6 +25,14 @@
 }
 
 @font-face {
+  font-family: 'Fraunces Variable';
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: block;
+  src: url('./fonts/Fraunces-Italic-Variable.woff2') format('woff2-variations');
+}
+
+@font-face {
   font-family: 'TeX Gyre Bonum';
   font-style: normal;
   font-weight: 400;
