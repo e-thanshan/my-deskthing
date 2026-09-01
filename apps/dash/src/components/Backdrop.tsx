@@ -1,24 +1,20 @@
+import background from '../assets/background.jpg';
 import { CottageScene } from './CottageScene';
-import { FallingLeaves } from './FallingLeaves';
 
 // ---------------------------------------------------------------------------
 // custom background image
 //
 // drop a landscape image (roughly 800x480 or larger) into src/assets/ and
-// import it here, then point BACKGROUND_IMAGE at it:
+// import it here, then point BACKGROUND_IMAGE at it. the build inlines the
+// file into the app bundle, so it works offline on the device. a plain
+// 'https://...' string also renders in a desktop browser preview, but the car
+// thing's webview has no direct internet, so a url shows nothing on the
+// device itself - bundle the file instead.
 //
-//   import background from '../assets/background.jpg';
-//   const BACKGROUND_IMAGE: string | null = background;
-//
-// the build inlines the file into the app bundle, so it works offline on the
-// device. a plain 'https://...' string also renders in a desktop browser
-// preview, but the car thing's webview has no direct internet, so a url shows
-// nothing on the device itself - bundle the file instead.
-//
-// leave it null to keep the painted cottage scene. falling leaves stay on top
-// either way; delete <FallingLeaves /> below if you want the image bare.
+// set it to null for the painted cottage scene with animated smoke. for
+// falling leaves over the image, render <FallingLeaves /> after the img.
 // ---------------------------------------------------------------------------
-const BACKGROUND_IMAGE: string | null = null;
+const BACKGROUND_IMAGE: string | null = background;
 
 export function Backdrop() {
   return (
@@ -28,7 +24,6 @@ export function Backdrop() {
       ) : (
         <CottageScene />
       )}
-      <FallingLeaves />
     </div>
   );
 }

@@ -1,5 +1,9 @@
 # dash
 
+## 0.4.0
+
+still photo background (bundled highland cottage image) replaces the animated scene
+
 ## 0.3.0
 
 painterly scene rework; custom background image slot in Backdrop.tsx; larger song details
