@@ -1,5 +1,9 @@
 # dash
 
+## 0.6.1
+
+remove the retired painted-scene code; artist and album share one line
+
 ## 0.6.0
 
 the photo comes alive: webgl warp drifts the clouds and sways trees and grass

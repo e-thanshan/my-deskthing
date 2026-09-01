@@ -8,9 +8,7 @@ export function NowPlaying({ conn, track }: { conn: ConnectionState; track: Medi
         <div className="truncate font-mono text-eyebrow tracking-[0.25em] text-off-white/70 uppercase">
           {open ? 'nothing playing' : 'connecting'}
         </div>
-        <div className="truncate text-title text-off-white/85">
-          {open ? 'play something on your phone' : 'waiting for the device'}
-        </div>
+        <div className="truncate text-title text-off-white/85">{open && 'waiting for the device'}</div>
       </div>
     );
   }
@@ -19,10 +17,10 @@ export function NowPlaying({ conn, track }: { conn: ConnectionState; track: Medi
       <div className="truncate pb-[0.12em] font-book text-[42px] leading-[1.15] font-bold tracking-tight-1">
         {track.title ?? 'unknown'}
       </div>
-      <div className="truncate pb-[0.12em] font-book text-2xl text-off-white/85">{track.artist ?? ''}</div>
-      {track.album && (
-        <div className="truncate pb-[0.12em] font-book text-base italic text-off-white/60">{track.album}</div>
-      )}
+      <div className="truncate pb-[0.12em] font-book text-2xl text-off-white/85">
+        {track.artist ?? ''}
+        {track.album && `, ${track.album}`}
+      </div>
     </div>
   );
 }
