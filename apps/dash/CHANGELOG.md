@@ -1,5 +1,9 @@
 # dash
 
+## 0.9.0
+
+sync trim on presets 2 and 3, hard re-anchor on preset 1, stale-poll guard
+
 ## 0.8.3
 
 re-anchor the playhead every few seconds and extrapolate on a monotonic clock

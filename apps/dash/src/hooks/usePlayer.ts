@@ -1,5 +1,5 @@
 import type { MediaItem, PlayerState } from '@bridgething/client';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useBridge } from '../bridge';
 
 type NowPlaying = {
@@ -18,33 +18,39 @@ export function usePlayer(): NowPlaying {
   const client = useBridge();
   const [snap, setSnap] = useState<{ state: PlayerState; takenAt: number } | null>(null);
   const [, setTick] = useState(0);
+  const seq = useRef(0);
 
   // performance.now is monotonic. the device has no rtc and takes its wall
   // clock from the phone, so Date.now can step mid-track and jerk the playhead.
-  const apply = useCallback(
-    (state: PlayerState) => setSnap({ state, takenAt: performance.now() - (state.playback.positionAgeMs ?? 0) }),
-    [],
-  );
+  const apply = useCallback((state: PlayerState) => {
+    seq.current++;
+    setSnap({ state, takenAt: performance.now() - (state.playback.positionAgeMs ?? 0) });
+  }, []);
+
+  // a poll issued before a track change must not land on top of it
+  const poll = useCallback(async () => {
+    const at = seq.current;
+    const r = await client.player.stateGet();
+    if (r.ok && seq.current === at) apply(r.response.state);
+  }, [client, apply]);
 
   useEffect(() => {
     const off = client.player.onSnapshot(r => apply(r.state));
-    client.player.stateGet().then(r => r.ok && apply(r.response.state));
+    void poll();
     return off;
-  }, [client, apply]);
+  }, [client, apply, poll]);
 
   const playing = snap?.state.playback.state === 'playing';
 
   useEffect(() => {
     if (!playing) return;
     const tick = setInterval(() => setTick(t => t + 1), 250);
-    const resync = setInterval(() => {
-      client.player.stateGet().then(r => r.ok && apply(r.response.state));
-    }, RESYNC_MS);
+    const resync = setInterval(() => void poll(), RESYNC_MS);
     return () => {
       clearInterval(tick);
       clearInterval(resync);
     };
-  }, [client, apply, playing]);
+  }, [poll, playing]);
 
   if (!snap) return { track: null, playing: false, positionMs: 0, durationMs: null };
 

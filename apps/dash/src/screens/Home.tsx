@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useConnection } from '../bridge';
+import { useCallback, useEffect, useState } from 'react';
+import { useBridge, useConnection } from '../bridge';
 import { Backdrop } from '../components/Backdrop';
 import { Clock } from '../components/Clock';
 import { Lyrics } from '../components/Lyrics';
@@ -7,24 +7,41 @@ import { NowPlaying } from '../components/NowPlaying';
 import { ProgressBar } from '../components/ProgressBar';
 import { useLyrics } from '../hooks/useLyrics';
 import { usePlayer } from '../hooks/usePlayer';
+import { useSyncOffset } from '../hooks/useSyncOffset';
 
 export default function Home() {
+  const client = useBridge();
   const conn = useConnection();
   const { track, positionMs, durationMs, playing } = usePlayer();
   const trackKey = track?.uri ?? track?.persistentId ?? null;
 
   const [lyricsOn, setLyricsOn] = useState(false);
   const { status, lines } = useLyrics(trackKey, lyricsOn);
+  const { offsetMs, nudge } = useSyncOffset();
   const [flash, setFlash] = useState<{ n: number; text: string } | null>(null);
+  const say = useCallback((text: string) => setFlash(f => ({ n: (f?.n ?? 0) + 1, text })), []);
+
+  // the phone only re-reports its playhead on a real transport change, so this
+  // is the one thing that can pull a wrong anchor back onto the music
+  const reanchor = useCallback(async () => {
+    if (!playing) return;
+    say('Resyncing');
+    await client.player.pause();
+    await new Promise(r => setTimeout(r, 350));
+    await client.player.resume();
+  }, [client, playing, say]);
 
   useEffect(() => {
-    // preset button 4 toggles the live lyric
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === '4') setLyricsOn(on => !on);
+      if (e.key === '1') void reanchor();
+      else if (e.key === '2' || e.key === '3') {
+        const next = nudge(e.key === '2' ? -1 : 1);
+        say(`Sync ${next > 0 ? '+' : ''}${(next / 1000).toFixed(2)}s`);
+      } else if (e.key === '4') setLyricsOn(on => !on);
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, []);
+  }, [nudge, reanchor, say]);
 
   useEffect(() => {
     if (!lyricsOn) return;
@@ -36,9 +53,10 @@ export default function Home() {
           : status === 'error'
             ? "Couldn't fetch lyrics"
             : null;
-    if (text) setFlash(f => ({ n: (f?.n ?? 0) + 1, text }));
-  }, [lyricsOn, status, trackKey]);
+    if (text) say(text);
+  }, [lyricsOn, status, trackKey, say]);
 
+  const shownMs = Math.max(0, durationMs == null ? positionMs + offsetMs : Math.min(positionMs + offsetMs, durationMs));
   const lyricsShowing = (lyricsOn && status === 'ready') || flash != null;
 
   return (
@@ -59,7 +77,7 @@ export default function Home() {
           </div>
         </div>
         <div className="flex-1" />
-        {lyricsOn && status === 'ready' && lines && <Lyrics lines={lines} positionMs={positionMs} />}
+        {lyricsOn && status === 'ready' && lines && <Lyrics lines={lines} positionMs={shownMs} />}
         {flash && (
           <div
             key={flash.n}
@@ -68,7 +86,7 @@ export default function Home() {
             {flash.text}
           </div>
         )}
-        <ProgressBar positionMs={positionMs} durationMs={durationMs} playing={playing} />
+        <ProgressBar positionMs={shownMs} durationMs={durationMs} playing={playing} />
       </div>
     </div>
   );
