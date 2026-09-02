@@ -1,5 +1,5 @@
 import type { MediaItem, PlayerState } from '@bridgething/client';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useBridge } from '../bridge';
 
 type NowPlaying = {
@@ -9,35 +9,48 @@ type NowPlaying = {
   durationMs: number | null;
 };
 
+// the daemon only pushes on material changes, so the playhead is extrapolated
+// between them and re-anchored on this interval. stateGet answers from the
+// daemon's cache in a few ms and never reaches the phone.
+const RESYNC_MS = 5_000;
+
 export function usePlayer(): NowPlaying {
   const client = useBridge();
   const [snap, setSnap] = useState<{ state: PlayerState; takenAt: number } | null>(null);
   const [, setTick] = useState(0);
 
+  // performance.now is monotonic. the device has no rtc and takes its wall
+  // clock from the phone, so Date.now can step mid-track and jerk the playhead.
+  const apply = useCallback(
+    (state: PlayerState) => setSnap({ state, takenAt: performance.now() - (state.playback.positionAgeMs ?? 0) }),
+    [],
+  );
+
   useEffect(() => {
-    // positionAgeMs dates the playhead, so rewind takenAt by it
-    const apply = (state: PlayerState) =>
-      setSnap({ state, takenAt: Date.now() - (state.playback.positionAgeMs ?? 0) });
     const off = client.player.onSnapshot(r => apply(r.state));
-    client.player.stateGet().then(r => {
-      if (r.ok) apply(r.response.state);
-    });
+    client.player.stateGet().then(r => r.ok && apply(r.response.state));
     return off;
-  }, [client]);
+  }, [client, apply]);
 
   const playing = snap?.state.playback.state === 'playing';
 
   useEffect(() => {
     if (!playing) return;
-    const id = setInterval(() => setTick(t => t + 1), 250);
-    return () => clearInterval(id);
-  }, [playing]);
+    const tick = setInterval(() => setTick(t => t + 1), 250);
+    const resync = setInterval(() => {
+      client.player.stateGet().then(r => r.ok && apply(r.response.state));
+    }, RESYNC_MS);
+    return () => {
+      clearInterval(tick);
+      clearInterval(resync);
+    };
+  }, [client, apply, playing]);
 
   if (!snap) return { track: null, playing: false, positionMs: 0, durationMs: null };
 
   const { state, takenAt } = snap;
   const durationMs = state.track?.durationMs ?? null;
-  const advanced = state.playback.positionMs + (playing ? Date.now() - takenAt : 0);
+  const advanced = state.playback.positionMs + (playing ? performance.now() - takenAt : 0);
   return {
     track: state.track,
     playing,

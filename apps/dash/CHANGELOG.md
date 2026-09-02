@@ -1,5 +1,9 @@
 # dash
 
+## 0.8.3
+
+re-anchor the playhead every few seconds and extrapolate on a monotonic clock
+
 ## 0.8.2
 
 failed lyric lookups retry instead of caching as none; distinct unsynced/error messages
