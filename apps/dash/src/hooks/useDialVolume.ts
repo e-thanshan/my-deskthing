@@ -1,26 +1,12 @@
-import { useEffect, useRef } from 'react';
+import { useCallback } from 'react';
 import { useBridge } from '../bridge';
+import { useDial } from './useDial';
 
-// one physical detent of the rotary arrives as a wheel event with |deltaX| 120
-const DETENT = 120;
-
-export function useDialVolume() {
+export function useDialVolume(enabled = true) {
   const client = useBridge();
-  const acc = useRef(0);
-
-  useEffect(() => {
-    const onWheel = (e: WheelEvent) => {
-      acc.current += e.deltaX;
-      while (acc.current >= DETENT) {
-        acc.current -= DETENT;
-        void client.audio.volumeUp();
-      }
-      while (acc.current <= -DETENT) {
-        acc.current += DETENT;
-        void client.audio.volumeDown();
-      }
-    };
-    window.addEventListener('wheel', onWheel);
-    return () => window.removeEventListener('wheel', onWheel);
-  }, [client]);
+  const onDetent = useCallback(
+    (dir: -1 | 1) => void (dir > 0 ? client.audio.volumeUp() : client.audio.volumeDown()),
+    [client],
+  );
+  useDial(onDetent, enabled);
 }

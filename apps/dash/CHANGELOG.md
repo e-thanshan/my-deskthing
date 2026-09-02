@@ -1,5 +1,22 @@
 # dash
 
+## 0.11.0
+
+measured the daemon's playhead against the music across a pause: it is accurate to a few ms and
+already pause-aware, so the sync tools built on the opposite assumption are gone. the hidden trim on
+presets 2 and 3 wrote a value that survived every restart and silently delayed the lyrics on every
+track, and the re-anchor pause-and-resume only re-triggered the audio gap it was meant to close.
+what is left is one visible Lyric offset in the settings panel, applied to the lyrics alone so the
+progress bar keeps reading the truth. the playhead also ticks at 100ms instead of 250ms, so a line
+can no longer land a quarter second late
+
+## 0.10.0
+
+preset 4 opens a settings panel driven entirely by the dial: turn to move, press to select, turn to
+set a value, press to keep it. first setting is night shift, a warm tint over the whole screen from
+off to quite warm, stored on the device. lyrics move to preset 1 and re-anchoring the playhead moves
+into the panel; sync trim stays on presets 2 and 3
+
 ## 0.9.0
 
 sync trim on presets 2 and 3, hard re-anchor on preset 1, stale-poll guard

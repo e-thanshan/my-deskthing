@@ -44,7 +44,8 @@ export function usePlayer(): NowPlaying {
 
   useEffect(() => {
     if (!playing) return;
-    const tick = setInterval(() => setTick(t => t + 1), 250);
+    // a lyric line can only flip on a tick, so this is the floor on how late one lands
+    const tick = setInterval(() => setTick(t => t + 1), 100);
     const resync = setInterval(() => void poll(), RESYNC_MS);
     return () => {
       clearInterval(tick);
