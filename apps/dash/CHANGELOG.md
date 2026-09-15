@@ -1,5 +1,20 @@
 # dash
 
+## 0.12.0
+
+the device is always on power, so it now has a way to look off without being shut down. hold Mode
+for a second and a row of vertical slats flips closed in a wave from left to right, the way a
+tri-vision billboard turns over, and the backlight drops to zero behind it. any press brings it
+back. music keeps playing throughout, so this parks the screen rather than the app, which is also
+what spares the one part of the hardware that continuous use actually wears: the backlight.
+
+the brightness that was in force is captured before it is overridden and restored on the way back,
+auto mode included. it is also parked in the store, so a reload or a crash while dark puts the
+backlight back instead of leaving a screen nothing on the device could brighten again. no step of
+the sequence waits on the daemon, because a wake that did could have left the screen dark for good
+the one time the daemon was gone. while the screen is parked the page ignores input, and neither the
+release of the hold nor its auto-repeat counts as the press that wakes it
+
 ## 0.11.0
 
 measured the daemon's playhead against the music across a pause: it is accurate to a few ms and

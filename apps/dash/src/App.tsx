@@ -2,16 +2,21 @@ import { useEffect, useState } from 'react';
 import { BridgeProvider } from './bridge';
 import { NightShift } from './components/NightShift';
 import { SettingsPanel } from './components/SettingsPanel';
+import { TriVision } from './components/TriVision';
 import { useDialVolume } from './hooks/useDialVolume';
+import { useHoldKey } from './hooks/useHoldKey';
 import { PrefsProvider, usePrefs, useSettingsPanel } from './prefs';
 import { screens } from './screens';
+import { SLEEP_HOLD_MS, SLEEP_KEYS, SleepProvider, useSleep } from './sleep';
 
 export default function App() {
   return (
     <BridgeProvider>
-      <PrefsProvider>
-        <Shell />
-      </PrefsProvider>
+      <SleepProvider>
+        <PrefsProvider>
+          <Shell />
+        </PrefsProvider>
+      </SleepProvider>
     </BridgeProvider>
   );
 }
@@ -19,7 +24,10 @@ export default function App() {
 function Shell() {
   const { prefs } = usePrefs();
   const { open, setOpen } = useSettingsPanel();
-  useDialVolume(!open);
+  const { phase, toggle } = useSleep();
+  const awake = phase === 'awake';
+  useDialVolume(!open && awake);
+  useHoldKey(SLEEP_KEYS, SLEEP_HOLD_MS, toggle, awake);
   const [screen, setScreen] = useState(0);
 
   useEffect(() => {
@@ -42,6 +50,7 @@ function Shell() {
       <Screen />
       {open && <SettingsPanel />}
       <NightShift level={prefs.nightShift} />
+      <TriVision phase={phase} />
     </>
   );
 }
