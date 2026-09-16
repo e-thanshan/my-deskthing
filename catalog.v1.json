@@ -1,7 +1,7 @@
 {
   "$schema": "https://apps.bridgething.com/schemas/catalog/v1.json",
   "schema": "catalog.v1",
-  "updated_at": "2026-09-16T16:55:46.802Z",
+  "updated_at": "2026-09-16T21:02:30.399Z",
   "repo": {
     "name": "Eshan's Car Thing Apps",
     "description": "Webapps for Eshan's Spotify Car Thing.",
@@ -19,6 +19,30 @@
       "source": "https://github.com/e-thanshan/my-deskthing",
       "versions": [
         {
+          "version": "0.14.0",
+          "released_at": "2026-09-16T21:02:30.396Z",
+          "download": {
+            "url": "https://e-thanshan.github.io/my-deskthing/r/01a05e05-e70d-7273-8674-39fe176819b2/0.14.0.zip",
+            "size": 1611000,
+            "sha256": "007280bed4d3d312f78990d7ceb09967ce9b8f45d0a15ded26eee270dbd06dba"
+          },
+          "settings": {
+            "url": "https://e-thanshan.github.io/my-deskthing/s/01a05e05-e70d-7273-8674-39fe176819b2/0.14.0.html",
+            "size": 26911,
+            "sha256": "ac6b1d3b7c3857f8b6e87cb2a04f4623abaf200ecade3e2035489f747162b683"
+          },
+          "permissions": [],
+          "extension": {
+            "desktop": true,
+            "permissions": [
+              "run:security",
+              "net:api.anthropic.com"
+            ]
+          },
+          "min_libbridgething_version": "0.12.1",
+          "changelog": "two claude usage bars sit under the clock: the session window and the weekly one, each a short\ncapsule with the percentage beside it. the account's own limit list names each window, carries an\nalready scaled percentage and says which of them deserves attention, so a bar turns from ember to\nred when the account says so rather than at a threshold picked here; a window with no severity of\nits own falls back to four fifths spent. a per model weekly cap labels itself with the model's\ndisplay name and is preferred over the all models weekly, which stands in when there is no scoped\ncap. a window whose reset has already passed reads zero rather than showing last period's number,\nand the pair fades back when the reading is more than fifteen minutes stale.\n\nthe numbers come from a new desktop extension, since the usage figures live with claude code on the\ncomputer and nothing on the device or the phone can reach them. it reads the oauth token out of the\nlogin keychain on each poll, so claude code stays the only thing refreshing it, and asks the usage\nendpoint every five minutes. the screen asks for the last reading as soon as it loads instead of\nwaiting on the next poll, so a page opened between them is not blank for five minutes. with no\ncomputer attached, or the extension disabled, the bars are simply absent and the rest of the screen\nis unchanged."
+        },
+        {
           "version": "0.13.0",
           "released_at": "2026-09-16T16:55:46.797Z",
           "download": {
@@ -32,6 +56,13 @@
             "sha256": "ac6b1d3b7c3857f8b6e87cb2a04f4623abaf200ecade3e2035489f747162b683"
           },
           "permissions": [],
+          "extension": {
+            "desktop": true,
+            "permissions": [
+              "run:security",
+              "net:api.anthropic.com"
+            ]
+          },
           "min_libbridgething_version": "0.12.1",
           "changelog": "the screen parks itself once a day, on the same slat sweep as the Mode hold, at 5:30 pm out of the\nbox. Auto off is the second row of the settings panel, a track across the day in half hour steps\nwith off in the leftmost sliver: dial it to nudge, or tap it to jump, since a whole day is more\ndetents than anyone wants to turn through. only the crossing of the time counts, so a screen already\nparked is left alone, one woken later in the evening stays on until tomorrow rather than going dark\nunder your hand, and moving the setting onto a time already past waits for the next day. the time\ncomes from the phone's clock and zone, so a device whose own clock has drifted cannot fire it early,\nand nothing fires at all until the daemon has reported a time.\n\nthe Lyric offset setting is gone, along with the trim it applied. it was correcting for a gap the\ndaemon's playhead does not actually have, so the lyrics now run straight off the playhead like the\nprogress bar always did"
         },
@@ -49,6 +80,13 @@
             "sha256": "ac6b1d3b7c3857f8b6e87cb2a04f4623abaf200ecade3e2035489f747162b683"
           },
           "permissions": [],
+          "extension": {
+            "desktop": true,
+            "permissions": [
+              "run:security",
+              "net:api.anthropic.com"
+            ]
+          },
           "min_libbridgething_version": "0.12.1",
           "changelog": "the device is always on power, so it now has a way to look off without being shut down. hold Mode\nfor a second and a row of vertical slats flips closed in a wave from left to right, the way a\ntri-vision billboard turns over, and the backlight drops to zero behind it. any press brings it\nback. music keeps playing throughout, so this parks the screen rather than the app, which is also\nwhat spares the one part of the hardware that continuous use actually wears: the backlight.\n\nthe brightness that was in force is captured before it is overridden and restored on the way back,\nauto mode included. it is also parked in the store, so a reload or a crash while dark puts the\nbacklight back instead of leaving a screen nothing on the device could brighten again. no step of\nthe sequence waits on the daemon, because a wake that did could have left the screen dark for good\nthe one time the daemon was gone. while the screen is parked the page ignores input, and neither the\nrelease of the hold nor its auto-repeat counts as the press that wakes it"
         },
@@ -66,6 +104,13 @@
             "sha256": "ac6b1d3b7c3857f8b6e87cb2a04f4623abaf200ecade3e2035489f747162b683"
           },
           "permissions": [],
+          "extension": {
+            "desktop": true,
+            "permissions": [
+              "run:security",
+              "net:api.anthropic.com"
+            ]
+          },
           "min_libbridgething_version": "0.12.1",
           "changelog": "measured the daemon's playhead against the music across a pause: it is accurate to a few ms and\nalready pause-aware, so the sync tools built on the opposite assumption are gone. the hidden trim on\npresets 2 and 3 wrote a value that survived every restart and silently delayed the lyrics on every\ntrack, and the re-anchor pause-and-resume only re-triggered the audio gap it was meant to close.\nwhat is left is one visible Lyric offset in the settings panel, applied to the lyrics alone so the\nprogress bar keeps reading the truth. the playhead also ticks at 100ms instead of 250ms, so a line\ncan no longer land a quarter second late"
         },
@@ -83,6 +128,13 @@
             "sha256": "ac6b1d3b7c3857f8b6e87cb2a04f4623abaf200ecade3e2035489f747162b683"
           },
           "permissions": [],
+          "extension": {
+            "desktop": true,
+            "permissions": [
+              "run:security",
+              "net:api.anthropic.com"
+            ]
+          },
           "min_libbridgething_version": "0.12.1",
           "changelog": "sync trim on presets 2 and 3, hard re-anchor on preset 1, stale-poll guard"
         },
@@ -100,6 +152,13 @@
             "sha256": "ac6b1d3b7c3857f8b6e87cb2a04f4623abaf200ecade3e2035489f747162b683"
           },
           "permissions": [],
+          "extension": {
+            "desktop": true,
+            "permissions": [
+              "run:security",
+              "net:api.anthropic.com"
+            ]
+          },
           "min_libbridgething_version": "0.12.1",
           "changelog": "re-anchor the playhead every few seconds and extrapolate on a monotonic clock"
         },
@@ -117,6 +176,13 @@
             "sha256": "ac6b1d3b7c3857f8b6e87cb2a04f4623abaf200ecade3e2035489f747162b683"
           },
           "permissions": [],
+          "extension": {
+            "desktop": true,
+            "permissions": [
+              "run:security",
+              "net:api.anthropic.com"
+            ]
+          },
           "min_libbridgething_version": "0.12.1",
           "changelog": "failed lyric lookups retry instead of caching as none; distinct unsynced/error messages"
         },
@@ -134,6 +200,13 @@
             "sha256": "ac6b1d3b7c3857f8b6e87cb2a04f4623abaf200ecade3e2035489f747162b683"
           },
           "permissions": [],
+          "extension": {
+            "desktop": true,
+            "permissions": [
+              "run:security",
+              "net:api.anthropic.com"
+            ]
+          },
           "min_libbridgething_version": "0.12.1",
           "changelog": "song details set in Fraunces italic"
         },
@@ -151,6 +224,13 @@
             "sha256": "ac6b1d3b7c3857f8b6e87cb2a04f4623abaf200ecade3e2035489f747162b683"
           },
           "permissions": [],
+          "extension": {
+            "desktop": true,
+            "permissions": [
+              "run:security",
+              "net:api.anthropic.com"
+            ]
+          },
           "min_libbridgething_version": "0.12.1",
           "changelog": "fix motion stutter after minutes (fp16 time precision); Fraunces clock; darker lyric scrim"
         },
@@ -168,6 +248,13 @@
             "sha256": "ac6b1d3b7c3857f8b6e87cb2a04f4623abaf200ecade3e2035489f747162b683"
           },
           "permissions": [],
+          "extension": {
+            "desktop": true,
+            "permissions": [
+              "run:security",
+              "net:api.anthropic.com"
+            ]
+          },
           "min_libbridgething_version": "0.12.1",
           "changelog": "preset 4 toggles a two-line live lyric above the progress bar"
         },
@@ -185,6 +272,13 @@
             "sha256": "ac6b1d3b7c3857f8b6e87cb2a04f4623abaf200ecade3e2035489f747162b683"
           },
           "permissions": [],
+          "extension": {
+            "desktop": true,
+            "permissions": [
+              "run:security",
+              "net:api.anthropic.com"
+            ]
+          },
           "min_libbridgething_version": "0.12.1",
           "changelog": "show the waiting hint while connecting, not after"
         },
@@ -202,6 +296,13 @@
             "sha256": "ac6b1d3b7c3857f8b6e87cb2a04f4623abaf200ecade3e2035489f747162b683"
           },
           "permissions": [],
+          "extension": {
+            "desktop": true,
+            "permissions": [
+              "run:security",
+              "net:api.anthropic.com"
+            ]
+          },
           "min_libbridgething_version": "0.12.1",
           "changelog": "remove the retired painted-scene code; artist and album share one line"
         },
@@ -219,6 +320,13 @@
             "sha256": "ac6b1d3b7c3857f8b6e87cb2a04f4623abaf200ecade3e2035489f747162b683"
           },
           "permissions": [],
+          "extension": {
+            "desktop": true,
+            "permissions": [
+              "run:security",
+              "net:api.anthropic.com"
+            ]
+          },
           "min_libbridgething_version": "0.12.1",
           "changelog": "the photo comes alive: webgl warp drifts the clouds and sways trees and grass"
         },
@@ -236,6 +344,13 @@
             "sha256": "ac6b1d3b7c3857f8b6e87cb2a04f4623abaf200ecade3e2035489f747162b683"
           },
           "permissions": [],
+          "extension": {
+            "desktop": true,
+            "permissions": [
+              "run:security",
+              "net:api.anthropic.com"
+            ]
+          },
           "min_libbridgething_version": "0.12.1",
           "changelog": "stop truncation from clipping serif descenders"
         },
@@ -253,6 +368,13 @@
             "sha256": "ac6b1d3b7c3857f8b6e87cb2a04f4623abaf200ecade3e2035489f747162b683"
           },
           "permissions": [],
+          "extension": {
+            "desktop": true,
+            "permissions": [
+              "run:security",
+              "net:api.anthropic.com"
+            ]
+          },
           "min_libbridgething_version": "0.12.1",
           "changelog": "song details set in TeX Gyre Bonum (bundled, GUST license); album line italic"
         },
@@ -270,6 +392,13 @@
             "sha256": "ac6b1d3b7c3857f8b6e87cb2a04f4623abaf200ecade3e2035489f747162b683"
           },
           "permissions": [],
+          "extension": {
+            "desktop": true,
+            "permissions": [
+              "run:security",
+              "net:api.anthropic.com"
+            ]
+          },
           "min_libbridgething_version": "0.12.1",
           "changelog": "paused playback dims the progress bar fill"
         },
@@ -287,6 +416,13 @@
             "sha256": "ac6b1d3b7c3857f8b6e87cb2a04f4623abaf200ecade3e2035489f747162b683"
           },
           "permissions": [],
+          "extension": {
+            "desktop": true,
+            "permissions": [
+              "run:security",
+              "net:api.anthropic.com"
+            ]
+          },
           "min_libbridgething_version": "0.12.1",
           "changelog": "still photo background (bundled highland cottage image) replaces the animated scene"
         },
@@ -304,6 +440,13 @@
             "sha256": "ac6b1d3b7c3857f8b6e87cb2a04f4623abaf200ecade3e2035489f747162b683"
           },
           "permissions": [],
+          "extension": {
+            "desktop": true,
+            "permissions": [
+              "run:security",
+              "net:api.anthropic.com"
+            ]
+          },
           "min_libbridgething_version": "0.12.1",
           "changelog": "painterly scene rework; custom background image slot in Backdrop.tsx; larger song details"
         },
@@ -321,6 +464,13 @@
             "sha256": "ac6b1d3b7c3857f8b6e87cb2a04f4623abaf200ecade3e2035489f747162b683"
           },
           "permissions": [],
+          "extension": {
+            "desktop": true,
+            "permissions": [
+              "run:security",
+              "net:api.anthropic.com"
+            ]
+          },
           "min_libbridgething_version": "0.12.1",
           "changelog": "song details top-left with truncation; animated cottagecore autumn scene with falling leaves and chimney smoke"
         },
@@ -338,6 +488,13 @@
             "sha256": "ac6b1d3b7c3857f8b6e87cb2a04f4623abaf200ecade3e2035489f747162b683"
           },
           "permissions": [],
+          "extension": {
+            "desktop": true,
+            "permissions": [
+              "run:security",
+              "net:api.anthropic.com"
+            ]
+          },
           "min_libbridgething_version": "0.12.1",
           "changelog": "First release."
         }
