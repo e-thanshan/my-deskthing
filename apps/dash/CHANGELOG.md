@@ -1,5 +1,20 @@
 # dash
 
+## 0.13.0
+
+the screen parks itself once a day, on the same slat sweep as the Mode hold, at 5:30 pm out of the
+box. Auto off is the second row of the settings panel, a track across the day in half hour steps
+with off in the leftmost sliver: dial it to nudge, or tap it to jump, since a whole day is more
+detents than anyone wants to turn through. only the crossing of the time counts, so a screen already
+parked is left alone, one woken later in the evening stays on until tomorrow rather than going dark
+under your hand, and moving the setting onto a time already past waits for the next day. the time
+comes from the phone's clock and zone, so a device whose own clock has drifted cannot fire it early,
+and nothing fires at all until the daemon has reported a time.
+
+the Lyric offset setting is gone, along with the trim it applied. it was correcting for a gap the
+daemon's playhead does not actually have, so the lyrics now run straight off the playhead like the
+progress bar always did
+
 ## 0.12.0
 
 the device is always on power, so it now has a way to look off without being shut down. hold Mode

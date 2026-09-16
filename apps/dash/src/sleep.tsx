@@ -28,6 +28,8 @@ type SleepApi = {
   phase: SleepPhase;
   /** Sleep if awake, wake if asleep. Ignored mid-sweep. */
   toggle: () => void;
+  /** Sleep if awake and do nothing otherwise, so a scheduled sleep can never turn the screen on. */
+  sleepNow: () => void;
 };
 
 const SleepContext = createContext<SleepApi | null>(null);
@@ -128,6 +130,10 @@ export function SleepProvider({ children }: { children: ReactNode }) {
     else if (phase === 'asleep') run(wake);
   }, [phase, run, sleep, wake]);
 
+  const sleepNow = useCallback(() => {
+    if (phase === 'awake') run(sleep);
+  }, [phase, run, sleep]);
+
   useEffect(() => {
     if (phase === 'asleep') asleepAt.current = Date.now();
   }, [phase]);
@@ -165,7 +171,7 @@ export function SleepProvider({ children }: { children: ReactNode }) {
     };
   }, [phase, run, wake]);
 
-  const api = useMemo(() => ({ phase, toggle }), [phase, toggle]);
+  const api = useMemo(() => ({ phase, toggle, sleepNow }), [phase, toggle, sleepNow]);
   return <SleepContext.Provider value={api}>{children}</SleepContext.Provider>;
 }
 

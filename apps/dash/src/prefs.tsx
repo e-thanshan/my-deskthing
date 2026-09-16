@@ -16,22 +16,34 @@ import { useBridge } from './bridge';
 // detent is always one step and the value round-trips through store as a string.
 export type Prefs = {
   nightShift: number;
-  lyricOffset: number;
+  autoOff: number;
 };
 
-// a min below zero renders as a centred slider rather than a fill meter
 export const PREF_RANGE: { [K in keyof Prefs]: { min: number; max: number } } = {
   nightShift: { min: 0, max: 10 },
-  lyricOffset: { min: -20, max: 20 },
+  autoOff: { min: -1, max: 47 },
 };
 
 const DEFAULTS: Prefs = {
   nightShift: 3,
-  lyricOffset: 0,
+  autoOff: 35,
 };
 
-// lyricOffset counts 100ms steps
-export const LYRIC_OFFSET_STEP_MS = 100;
+// autoOff counts half hours from midnight, so one detent is 30 minutes and the day is 48 steps
+export const AUTO_OFF_STEP_MIN = 30;
+
+/** Minute of the day `autoOff` names, or null when it is off. */
+export function autoOffMinutes(step: number): number | null {
+  return step < 0 ? null : step * AUTO_OFF_STEP_MIN;
+}
+
+/** `autoOff` as a wall-clock label, `off` included. */
+export function autoOffLabel(step: number): string {
+  const mins = autoOffMinutes(step);
+  if (mins === null) return 'off';
+  const hour = Math.floor(mins / 60);
+  return `${hour % 12 === 0 ? 12 : hour % 12}:${String(mins % 60).padStart(2, '0')} ${hour >= 12 ? 'pm' : 'am'}`;
+}
 
 const STORE_PREFIX = 'pref.';
 

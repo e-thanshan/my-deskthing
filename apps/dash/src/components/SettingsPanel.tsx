@@ -1,21 +1,30 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDial } from '../hooks/useDial';
-import { clamp, PREF_RANGE, usePrefs, useSettingsPanel, type Prefs } from '../prefs';
+import { autoOffLabel, clamp, PREF_RANGE, usePrefs, useSettingsPanel, type Prefs } from '../prefs';
 
-type Row = { key: keyof Prefs; label: string; hint: string; format: (v: number) => string };
+type Row = {
+  key: keyof Prefs;
+  label: string;
+  hint: string;
+  /** `meter` reads as a quantity, `track` as a point in the day. */
+  kind: 'meter' | 'track';
+  format: (v: number) => string;
+};
 
 const ROWS: Row[] = [
   {
     key: 'nightShift',
     label: 'Night shift',
     hint: 'gentler on the eyes after dark',
+    kind: 'meter',
     format: v => (v === 0 ? 'off' : `${v * 10}%`),
   },
   {
-    key: 'lyricOffset',
-    label: 'Lyric offset',
-    hint: 'plus shows lines sooner, minus later',
-    format: v => (v === 0 ? 'none' : `${v > 0 ? '+' : '-'}${(Math.abs(v) / 10).toFixed(1)}s`),
+    key: 'autoOff',
+    label: 'Auto off',
+    hint: 'parks the screen at this time each day',
+    kind: 'track',
+    format: autoOffLabel,
   },
 ];
 
@@ -122,12 +131,12 @@ export function SettingsPanel() {
                   <span className="block truncate text-hint text-off-white/40">{row.hint}</span>
                 </span>
                 <span className="flex shrink-0 items-center gap-3">
-                  {min < 0 ? (
-                    <Slider value={value} max={max} hot={hot} onPick={pick} />
+                  {row.kind === 'track' ? (
+                    <Track value={value} min={min} max={max} hot={hot} onPick={pick} />
                   ) : (
                     <Meter value={value} max={max} hot={hot} onPick={pick} />
                   )}
-                  <span className="w-12 text-right font-mono text-hint text-off-white/70">{row.format(value)}</span>
+                  <span className="w-16 text-right font-mono text-hint text-off-white/70">{row.format(value)}</span>
                 </span>
               </div>
             );
@@ -176,38 +185,44 @@ function Meter({
   );
 }
 
-// assumes a range centred on zero, which is what a trim is
-function Slider({
+// a whole day is more detents than anyone wants to dial across, so the tap matters here more than
+// on a meter: it maps from min, which puts off in the leftmost sliver and midday near the tick
+function Track({
   value,
+  min,
   max,
   hot,
   onPick,
 }: {
   value: number;
+  min: number;
   max: number;
   hot: boolean;
   onPick: (value: number) => void;
 }) {
   const width = 126;
-  const half = width / 2;
-  const span = (Math.abs(value) / max) * half;
+  const marker = 3;
+  const span = width - marker;
+  const off = value < 0;
   return (
     <span
       onClick={e => {
         e.stopPropagation();
         const box = (e.currentTarget as HTMLElement).getBoundingClientRect();
-        onPick(Math.round(((e.clientX - box.left - half) / half) * max));
+        onPick(min + Math.round(((e.clientX - box.left) / box.width) * (max - min)));
       }}
       className="relative -my-2 block py-2"
       style={{ width }}>
       <span className="block h-[3px] rounded-full bg-off-white/15" />
       <span className="absolute inset-y-1 left-1/2 w-px -translate-x-1/2 bg-off-white/30" />
-      <span
-        className={`absolute top-1/2 h-[3px] -translate-y-1/2 rounded-full transition-colors duration-150 ${
-          hot ? 'bg-ember' : 'bg-ember/55'
-        }`}
-        style={{ left: value < 0 ? half - span : half, width: span }}
-      />
+      {!off && (
+        <span
+          className={`absolute top-1/2 h-3.5 -translate-y-1/2 rounded-full transition-colors duration-150 ${
+            hot ? 'bg-ember' : 'bg-ember/55'
+          }`}
+          style={{ left: (value / max) * span, width: marker }}
+        />
+      )}
     </span>
   );
 }

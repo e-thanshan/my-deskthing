@@ -7,7 +7,7 @@ import { NowPlaying } from '../components/NowPlaying';
 import { ProgressBar } from '../components/ProgressBar';
 import { useLyrics } from '../hooks/useLyrics';
 import { usePlayer } from '../hooks/usePlayer';
-import { LYRIC_OFFSET_STEP_MS, usePrefs, useSettingsPanel } from '../prefs';
+import { useSettingsPanel } from '../prefs';
 
 export default function Home() {
   const conn = useConnection();
@@ -16,7 +16,6 @@ export default function Home() {
 
   const [lyricsOn, setLyricsOn] = useState(false);
   const { status, lines } = useLyrics(trackKey, lyricsOn);
-  const { prefs } = usePrefs();
   const [flash, setFlash] = useState<{ n: number; text: string } | null>(null);
   const say = useCallback((text: string) => setFlash(f => ({ n: (f?.n ?? 0) + 1, text })), []);
   const { open: panelOpen } = useSettingsPanel();
@@ -43,9 +42,6 @@ export default function Home() {
     if (text) say(text);
   }, [lyricsOn, status, trackKey, say]);
 
-  // the trim is for the gap between the phone's playhead and what the speakers are
-  // actually playing, so it moves the lyrics only; the progress bar shows the truth
-  const lyricMs = Math.max(0, positionMs + prefs.lyricOffset * LYRIC_OFFSET_STEP_MS);
   const lyricsShowing = (lyricsOn && status === 'ready') || flash != null;
 
   return (
@@ -66,7 +62,7 @@ export default function Home() {
           </div>
         </div>
         <div className="flex-1" />
-        {lyricsOn && status === 'ready' && lines && <Lyrics lines={lines} positionMs={lyricMs} />}
+        {lyricsOn && status === 'ready' && lines && <Lyrics lines={lines} positionMs={positionMs} />}
         {flash && (
           <div
             key={flash.n}
