@@ -1,7 +1,7 @@
 {
   "$schema": "https://apps.bridgething.com/schemas/catalog/v1.json",
   "schema": "catalog.v1",
-  "updated_at": "2026-09-15T18:00:20.321Z",
+  "updated_at": "2026-09-16T16:55:46.802Z",
   "repo": {
     "name": "Eshan's Car Thing Apps",
     "description": "Webapps for Eshan's Spotify Car Thing.",
@@ -18,6 +18,23 @@
       "homepage": "https://github.com/e-thanshan/my-deskthing",
       "source": "https://github.com/e-thanshan/my-deskthing",
       "versions": [
+        {
+          "version": "0.13.0",
+          "released_at": "2026-09-16T16:55:46.797Z",
+          "download": {
+            "url": "https://e-thanshan.github.io/my-deskthing/r/01a05e05-e70d-7273-8674-39fe176819b2/0.13.0.zip",
+            "size": 1603427,
+            "sha256": "3636af25457ae94eca24a2d792bdc39da4390f7925a26626cf3e8d132fa7ec4b"
+          },
+          "settings": {
+            "url": "https://e-thanshan.github.io/my-deskthing/s/01a05e05-e70d-7273-8674-39fe176819b2/0.13.0.html",
+            "size": 26911,
+            "sha256": "ac6b1d3b7c3857f8b6e87cb2a04f4623abaf200ecade3e2035489f747162b683"
+          },
+          "permissions": [],
+          "min_libbridgething_version": "0.12.1",
+          "changelog": "the screen parks itself once a day, on the same slat sweep as the Mode hold, at 5:30 pm out of the\nbox. Auto off is the second row of the settings panel, a track across the day in half hour steps\nwith off in the leftmost sliver: dial it to nudge, or tap it to jump, since a whole day is more\ndetents than anyone wants to turn through. only the crossing of the time counts, so a screen already\nparked is left alone, one woken later in the evening stays on until tomorrow rather than going dark\nunder your hand, and moving the setting onto a time already past waits for the next day. the time\ncomes from the phone's clock and zone, so a device whose own clock has drifted cannot fire it early,\nand nothing fires at all until the daemon has reported a time.\n\nthe Lyric offset setting is gone, along with the trim it applied. it was correcting for a gap the\ndaemon's playhead does not actually have, so the lyrics now run straight off the playhead like the\nprogress bar always did"
+        },
         {
           "version": "0.12.0",
           "released_at": "2026-09-15T18:00:20.316Z",
