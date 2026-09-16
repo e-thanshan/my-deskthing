@@ -1,5 +1,24 @@
 # dash
 
+## 0.14.0
+
+two claude usage bars sit under the clock: the session window and the weekly one, each a short
+capsule with the percentage beside it. the account's own limit list names each window, carries an
+already scaled percentage and says which of them deserves attention, so a bar turns from ember to
+red when the account says so rather than at a threshold picked here; a window with no severity of
+its own falls back to four fifths spent. a per model weekly cap labels itself with the model's
+display name and is preferred over the all models weekly, which stands in when there is no scoped
+cap. a window whose reset has already passed reads zero rather than showing last period's number,
+and the pair fades back when the reading is more than fifteen minutes stale.
+
+the numbers come from a new desktop extension, since the usage figures live with claude code on the
+computer and nothing on the device or the phone can reach them. it reads the oauth token out of the
+login keychain on each poll, so claude code stays the only thing refreshing it, and asks the usage
+endpoint every five minutes. the screen asks for the last reading as soon as it loads instead of
+waiting on the next poll, so a page opened between them is not blank for five minutes. with no
+computer attached, or the extension disabled, the bars are simply absent and the rest of the screen
+is unchanged.
+
 ## 0.13.0
 
 the screen parks itself once a day, on the same slat sweep as the Mode hold, at 5:30 pm out of the

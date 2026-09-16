@@ -5,6 +5,7 @@ import { Clock } from '../components/Clock';
 import { Lyrics } from '../components/Lyrics';
 import { NowPlaying } from '../components/NowPlaying';
 import { ProgressBar } from '../components/ProgressBar';
+import { UsageBars } from '../components/UsageBars';
 import { useLyrics } from '../hooks/useLyrics';
 import { usePlayer } from '../hooks/usePlayer';
 import { useSettingsPanel } from '../prefs';
@@ -57,8 +58,9 @@ export default function Home() {
           <div className="min-w-0 flex-1">
             <NowPlaying conn={conn} track={track} />
           </div>
-          <div className="shrink-0 pl-6">
+          <div className="flex shrink-0 flex-col items-end gap-2.5 pl-6">
             <Clock />
+            <UsageBars />
           </div>
         </div>
         <div className="flex-1" />
