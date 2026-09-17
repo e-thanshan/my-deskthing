@@ -21,4 +21,17 @@ declare namespace Deno {
     constructor(command: string, options?: CommandOptions);
     output(): Promise<CommandOutput>;
   }
+
+  interface HttpClient {
+    close(): void;
+  }
+
+  function createHttpClient(options: { caCerts?: readonly string[] }): HttpClient;
+
+  const build: { readonly os: string };
+}
+
+/** Deno accepts a custom client on `fetch`, which the DOM lib's `RequestInit` does not declare. */
+interface RequestInit {
+  client?: Deno.HttpClient;
 }

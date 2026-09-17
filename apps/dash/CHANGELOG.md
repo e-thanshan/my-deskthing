@@ -1,5 +1,17 @@
 # dash
 
+## 0.14.1
+
+the bars never appeared on a machine whose network inspects tls. deno carries its own root
+certificates and never consults the login keychain, so a corporate root that every other tool on the
+machine trusts is unknown to the extension, and each poll died as an opaque `fetch failed`. the
+extension now exports the keychain's roots through the `security` binary it already had a run grant
+for and hands them to its own http client, which needs no new permission and is additive, so a
+machine with nothing intercepting behaves as before. non-macos hosts keep deno's own roots.
+
+a fetch that fails now logs the transport reason deno hides in `cause`, rather than only the
+`TypeError` that says nothing about which half broke.
+
 ## 0.14.0
 
 two claude usage bars sit under the clock: the session window and the weekly one, each a short

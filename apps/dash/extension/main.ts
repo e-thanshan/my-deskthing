@@ -27,6 +27,35 @@ async function readToken(): Promise<string | null> {
   }
 }
 
+// deno carries its own root store and never consults the macos keychain, so on a network
+// that intercepts tls every fetch dies with UnknownIssuer. hand it the keychain's roots,
+// which `security` can export without any permission beyond the run grant already held.
+let clientResolved = false;
+let httpClient: Deno.HttpClient | undefined;
+
+async function keychainClient(): Promise<Deno.HttpClient | undefined> {
+  if (clientResolved) return httpClient;
+  clientResolved = true;
+  if (Deno.build.os !== 'darwin') return undefined;
+  try {
+    const out = await new Deno.Command('security', {
+      args: ['find-certificate', '-a', '-p'],
+      stdout: 'piped',
+      stderr: 'null',
+    }).output();
+    if (!out.success) return undefined;
+    const caCerts = new TextDecoder()
+      .decode(out.stdout)
+      .split(/(?=-----BEGIN CERTIFICATE-----)/)
+      .map(block => block.trim())
+      .filter(block => block.startsWith('-----BEGIN CERTIFICATE-----'));
+    if (caCerts.length > 0) httpClient = Deno.createHttpClient({ caCerts });
+  } catch {
+    httpClient = undefined;
+  }
+  return httpClient;
+}
+
 // resets_at arrives as an iso timestamp, but tolerate epoch seconds or ms
 function toEpochMs(value: unknown): number | null {
   if (typeof value === 'number' && Number.isFinite(value)) return value > 1e11 ? value : value * 1000;
@@ -140,6 +169,7 @@ defineExtension({
       }
       try {
         const res = await fetch(ENDPOINT, {
+          client: await keychainClient(),
           headers: {
             authorization: `Bearer ${token}`,
             'anthropic-beta': 'oauth-2025-04-20',
@@ -158,7 +188,9 @@ defineExtension({
         await ctx.kv.set(CACHE_KEY, latest);
         push();
       } catch (err) {
-        ctx.log.warn('usage fetch threw', err);
+        // deno buries the real transport failure (tls, dns, refused) in `cause`
+        const cause = (err as { cause?: { message?: string } })?.cause?.message;
+        ctx.log.warn('usage fetch threw', String(err), cause ? `cause: ${cause}` : '');
       }
     };
 
@@ -173,5 +205,6 @@ defineExtension({
   },
   stop() {
     clearInterval(timer);
+    httpClient?.close();
   },
 });
