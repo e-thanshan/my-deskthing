@@ -1,7 +1,7 @@
 {
   "$schema": "https://apps.bridgething.com/schemas/catalog/v1.json",
   "schema": "catalog.v1",
-  "updated_at": "2026-09-16T21:02:30.399Z",
+  "updated_at": "2026-09-17T17:17:57.098Z",
   "repo": {
     "name": "Eshan's Car Thing Apps",
     "description": "Webapps for Eshan's Spotify Car Thing.",
@@ -18,6 +18,30 @@
       "homepage": "https://github.com/e-thanshan/my-deskthing",
       "source": "https://github.com/e-thanshan/my-deskthing",
       "versions": [
+        {
+          "version": "0.14.1",
+          "released_at": "2026-09-17T17:17:57.094Z",
+          "download": {
+            "url": "https://e-thanshan.github.io/my-deskthing/r/01a05e05-e70d-7273-8674-39fe176819b2/0.14.1.zip",
+            "size": 1611266,
+            "sha256": "1a91c91b5166c73aa52904601a4339ee7affccd652325250961ab34e04700b13"
+          },
+          "settings": {
+            "url": "https://e-thanshan.github.io/my-deskthing/s/01a05e05-e70d-7273-8674-39fe176819b2/0.14.1.html",
+            "size": 26911,
+            "sha256": "ac6b1d3b7c3857f8b6e87cb2a04f4623abaf200ecade3e2035489f747162b683"
+          },
+          "permissions": [],
+          "extension": {
+            "desktop": true,
+            "permissions": [
+              "run:security",
+              "net:api.anthropic.com"
+            ]
+          },
+          "min_libbridgething_version": "0.12.1",
+          "changelog": "the bars never appeared on a machine whose network inspects tls. deno carries its own root\ncertificates and never consults the login keychain, so a corporate root that every other tool on the\nmachine trusts is unknown to the extension, and each poll died as an opaque `fetch failed`. the\nextension now exports the keychain's roots through the `security` binary it already had a run grant\nfor and hands them to its own http client, which needs no new permission and is additive, so a\nmachine with nothing intercepting behaves as before. non-macos hosts keep deno's own roots.\n\na fetch that fails now logs the transport reason deno hides in `cause`, rather than only the\n`TypeError` that says nothing about which half broke."
+        },
         {
           "version": "0.14.0",
           "released_at": "2026-09-16T21:02:30.396Z",
