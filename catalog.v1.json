@@ -1,7 +1,7 @@
 {
   "$schema": "https://apps.bridgething.com/schemas/catalog/v1.json",
   "schema": "catalog.v1",
-  "updated_at": "2026-09-17T17:17:57.098Z",
+  "updated_at": "2026-09-21T22:42:05.608Z",
   "repo": {
     "name": "Eshan's Car Thing Apps",
     "description": "Webapps for Eshan's Spotify Car Thing.",
@@ -18,6 +18,32 @@
       "homepage": "https://github.com/e-thanshan/my-deskthing",
       "source": "https://github.com/e-thanshan/my-deskthing",
       "versions": [
+        {
+          "version": "0.15.0",
+          "released_at": "2026-09-21T22:42:05.598Z",
+          "download": {
+            "url": "https://e-thanshan.github.io/my-deskthing/r/01a05e05-e70d-7273-8674-39fe176819b2/0.15.0.zip",
+            "size": 1616959,
+            "sha256": "194a182d0f16545367625c94e32159cea42b1663a1cecd56e4608b59f49a8909"
+          },
+          "settings": {
+            "url": "https://e-thanshan.github.io/my-deskthing/s/01a05e05-e70d-7273-8674-39fe176819b2/0.15.0.html",
+            "size": 26911,
+            "sha256": "ac6b1d3b7c3857f8b6e87cb2a04f4623abaf200ecade3e2035489f747162b683"
+          },
+          "permissions": [],
+          "extension": {
+            "desktop": true,
+            "permissions": [
+              "run:security",
+              "net:api.anthropic.com",
+              "env:HOME",
+              "read:~/Library/Application Support/dash-inputcount/counts.json"
+            ]
+          },
+          "min_libbridgething_version": "0.12.1",
+          "changelog": "a ribbon of running totals sits under the progress bar, on preset 2. it takes its height from a\nspacer rather than clipping itself open, so the bar and the lyrics slide up to make room and a\nreadout is free to overflow above the rule. back logs a drink whether or not the ribbon is open,\nso the common case is one press and no screen at all. each press throws a `+1 drink` up out of the\ndrinks cell and fades it: the ribbon fades its readouts rather than the row itself, so the cell\nkeeps its box while shut and a floater launched over a closed ribbon still has somewhere to launch\nfrom.\n\nlistening time is counted on the device from the playhead, which means it is what this screen\nwitnessed rather than everything the account played: a phone listening with the car thing unplugged\nadds nothing. the totals are written back as absolute numbers a second after they move, so a\ndropped write costs the interval it covered and the next one puts the figure right again, and a\nstored total is folded into whatever accumulated while the read was still in flight so a drink\nlogged in the first second is never overwritten by the load landing on top of it.\n\nkeystrokes and scrolled distance come from a separate launchd agent, since nothing on the device or\nthe phone can see the computer's input. `bun run install-inputcount` builds `scripts/inputcount.c`\ninto `/usr/local/libexec/dash-inputcount` and registers it; the extension only reads the json\nodometer the agent leaves under application support, so the app itself asks for one more read path\nand nothing else. the agent links no networking and holds no key identities, so the two numbers the\ndevice draws are the only thing anything downstream ever sees.\n\nthe binary is installed root owned, in a root owned directory outside the home directory, which is\nthe one part of this worth a sudo prompt. the grant it holds is keylogger grade whatever the code\ndoes with it, and a binary left somewhere the user can write is a binary anything running as the\nuser can swap for another one under an approval already on file. removing a file needs write\npermission on the directory rather than on the file, so the directory has to be root owned too.\n\nit is an agent rather than a child of the extension because of how macos assigns input monitoring.\nthe grant attaches to the responsible process, and a binary carrying its own developer id and the\nhardened runtime becomes that process in place of whoever launched it. deno is signed exactly that\nway, so a helper spawned from the extension is attributed to deno no matter whether the terminal or\nbridgething.app started the chain, and granting either of those never reaches it. under launchd the\nbinary is its own principal and holds its own grant, which also survives deno being upgraded out\nfrom under it. the tap is listen-only, which can neither alter nor drop an event, and counts events\nwithout recording which keys they were.\n\nthe agent owns the odometer, so the totals keep climbing with bridgething closed and are read back\nfrom the file on restart rather than beginning again at zero, a revoked grant included. it exits\nwhen the grant is missing instead of waiting for one, because input monitoring only takes hold for\na freshly started process, and launchd brings it back on a five minute throttle so granting it is\nall the user has to do. without the agent the two cells are simply absent; without the grant the\nribbon says so in a line where they were, and the extension says so once in the log, since silence\nthere reads exactly like a working counter watching nobody type.\n\nscrolled distance is reported in feet until there is a mile of it, because a mile is about eight\nmillion scroll points and the odometer would otherwise read zero for months."
+        },
         {
           "version": "0.14.1",
           "released_at": "2026-09-17T17:17:57.094Z",
@@ -36,7 +62,9 @@
             "desktop": true,
             "permissions": [
               "run:security",
-              "net:api.anthropic.com"
+              "net:api.anthropic.com",
+              "env:HOME",
+              "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -60,7 +88,9 @@
             "desktop": true,
             "permissions": [
               "run:security",
-              "net:api.anthropic.com"
+              "net:api.anthropic.com",
+              "env:HOME",
+              "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -84,7 +114,9 @@
             "desktop": true,
             "permissions": [
               "run:security",
-              "net:api.anthropic.com"
+              "net:api.anthropic.com",
+              "env:HOME",
+              "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -108,7 +140,9 @@
             "desktop": true,
             "permissions": [
               "run:security",
-              "net:api.anthropic.com"
+              "net:api.anthropic.com",
+              "env:HOME",
+              "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -132,7 +166,9 @@
             "desktop": true,
             "permissions": [
               "run:security",
-              "net:api.anthropic.com"
+              "net:api.anthropic.com",
+              "env:HOME",
+              "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -156,7 +192,9 @@
             "desktop": true,
             "permissions": [
               "run:security",
-              "net:api.anthropic.com"
+              "net:api.anthropic.com",
+              "env:HOME",
+              "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -180,7 +218,9 @@
             "desktop": true,
             "permissions": [
               "run:security",
-              "net:api.anthropic.com"
+              "net:api.anthropic.com",
+              "env:HOME",
+              "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -204,7 +244,9 @@
             "desktop": true,
             "permissions": [
               "run:security",
-              "net:api.anthropic.com"
+              "net:api.anthropic.com",
+              "env:HOME",
+              "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -228,7 +270,9 @@
             "desktop": true,
             "permissions": [
               "run:security",
-              "net:api.anthropic.com"
+              "net:api.anthropic.com",
+              "env:HOME",
+              "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -252,7 +296,9 @@
             "desktop": true,
             "permissions": [
               "run:security",
-              "net:api.anthropic.com"
+              "net:api.anthropic.com",
+              "env:HOME",
+              "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -276,7 +322,9 @@
             "desktop": true,
             "permissions": [
               "run:security",
-              "net:api.anthropic.com"
+              "net:api.anthropic.com",
+              "env:HOME",
+              "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -300,7 +348,9 @@
             "desktop": true,
             "permissions": [
               "run:security",
-              "net:api.anthropic.com"
+              "net:api.anthropic.com",
+              "env:HOME",
+              "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -324,7 +374,9 @@
             "desktop": true,
             "permissions": [
               "run:security",
-              "net:api.anthropic.com"
+              "net:api.anthropic.com",
+              "env:HOME",
+              "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -348,7 +400,9 @@
             "desktop": true,
             "permissions": [
               "run:security",
-              "net:api.anthropic.com"
+              "net:api.anthropic.com",
+              "env:HOME",
+              "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -372,7 +426,9 @@
             "desktop": true,
             "permissions": [
               "run:security",
-              "net:api.anthropic.com"
+              "net:api.anthropic.com",
+              "env:HOME",
+              "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -396,7 +452,9 @@
             "desktop": true,
             "permissions": [
               "run:security",
-              "net:api.anthropic.com"
+              "net:api.anthropic.com",
+              "env:HOME",
+              "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -420,7 +478,9 @@
             "desktop": true,
             "permissions": [
               "run:security",
-              "net:api.anthropic.com"
+              "net:api.anthropic.com",
+              "env:HOME",
+              "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -444,7 +504,9 @@
             "desktop": true,
             "permissions": [
               "run:security",
-              "net:api.anthropic.com"
+              "net:api.anthropic.com",
+              "env:HOME",
+              "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -468,7 +530,9 @@
             "desktop": true,
             "permissions": [
               "run:security",
-              "net:api.anthropic.com"
+              "net:api.anthropic.com",
+              "env:HOME",
+              "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -492,7 +556,9 @@
             "desktop": true,
             "permissions": [
               "run:security",
-              "net:api.anthropic.com"
+              "net:api.anthropic.com",
+              "env:HOME",
+              "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -516,7 +582,9 @@
             "desktop": true,
             "permissions": [
               "run:security",
-              "net:api.anthropic.com"
+              "net:api.anthropic.com",
+              "env:HOME",
+              "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
           },
           "min_libbridgething_version": "0.12.1",
