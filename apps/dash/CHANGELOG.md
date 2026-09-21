@@ -1,5 +1,55 @@
 # dash
 
+## 0.15.0
+
+a ribbon of running totals sits under the progress bar, on preset 2. it takes its height from a
+spacer rather than clipping itself open, so the bar and the lyrics slide up to make room and a
+readout is free to overflow above the rule. back logs a drink whether or not the ribbon is open,
+so the common case is one press and no screen at all. each press throws a `+1 drink` up out of the
+drinks cell and fades it: the ribbon fades its readouts rather than the row itself, so the cell
+keeps its box while shut and a floater launched over a closed ribbon still has somewhere to launch
+from.
+
+listening time is counted on the device from the playhead, which means it is what this screen
+witnessed rather than everything the account played: a phone listening with the car thing unplugged
+adds nothing. the totals are written back as absolute numbers a second after they move, so a
+dropped write costs the interval it covered and the next one puts the figure right again, and a
+stored total is folded into whatever accumulated while the read was still in flight so a drink
+logged in the first second is never overwritten by the load landing on top of it.
+
+keystrokes and scrolled distance come from a separate launchd agent, since nothing on the device or
+the phone can see the computer's input. `bun run install-inputcount` builds `scripts/inputcount.c`
+into `/usr/local/libexec/dash-inputcount` and registers it; the extension only reads the json
+odometer the agent leaves under application support, so the app itself asks for one more read path
+and nothing else. the agent links no networking and holds no key identities, so the two numbers the
+device draws are the only thing anything downstream ever sees.
+
+the binary is installed root owned, in a root owned directory outside the home directory, which is
+the one part of this worth a sudo prompt. the grant it holds is keylogger grade whatever the code
+does with it, and a binary left somewhere the user can write is a binary anything running as the
+user can swap for another one under an approval already on file. removing a file needs write
+permission on the directory rather than on the file, so the directory has to be root owned too.
+
+it is an agent rather than a child of the extension because of how macos assigns input monitoring.
+the grant attaches to the responsible process, and a binary carrying its own developer id and the
+hardened runtime becomes that process in place of whoever launched it. deno is signed exactly that
+way, so a helper spawned from the extension is attributed to deno no matter whether the terminal or
+bridgething.app started the chain, and granting either of those never reaches it. under launchd the
+binary is its own principal and holds its own grant, which also survives deno being upgraded out
+from under it. the tap is listen-only, which can neither alter nor drop an event, and counts events
+without recording which keys they were.
+
+the agent owns the odometer, so the totals keep climbing with bridgething closed and are read back
+from the file on restart rather than beginning again at zero, a revoked grant included. it exits
+when the grant is missing instead of waiting for one, because input monitoring only takes hold for
+a freshly started process, and launchd brings it back on a five minute throttle so granting it is
+all the user has to do. without the agent the two cells are simply absent; without the grant the
+ribbon says so in a line where they were, and the extension says so once in the log, since silence
+there reads exactly like a working counter watching nobody type.
+
+scrolled distance is reported in feet until there is a mile of it, because a mile is about eight
+million scroll points and the odometer would otherwise read zero for months.
+
 ## 0.14.1
 
 the bars never appeared on a machine whose network inspects tls. deno carries its own root

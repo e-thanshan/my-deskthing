@@ -1,4 +1,5 @@
 import { asJson, defineExtension, json } from '@bridgething/extension';
+import { startInputCounts, type InputCounter } from './inputcount.ts';
 
 const ENDPOINT = 'https://api.anthropic.com/api/oauth/usage';
 const KEYCHAIN_SERVICE = 'Claude Code-credentials';
@@ -138,6 +139,7 @@ function describe(usage: Usage): string {
 }
 
 let timer: ReturnType<typeof setInterval> | undefined;
+let input: InputCounter | undefined;
 
 defineExtension({
   async start(ctx) {
@@ -148,15 +150,24 @@ defineExtension({
       if (latest) ctx.broadcast(json(latest));
     };
 
+    const counter = startInputCounts(ctx, state => ctx.broadcast(json(state)));
+    input = counter;
+
     // a forward only reaches the active webapp, so resend whenever a device turns up
     ctx.on('device', event => {
-      if (event.device.active) push();
+      if (!event.device.active) return;
+      push();
+      event.device.send(json(counter.current()));
     });
 
     // a page that loads between polls would otherwise sit empty until the next one, so
     // answer whatever it asks for out of the last reading
     ctx.on('message', (device, message) => {
       const asked = asJson(message) as Record<string, unknown> | undefined;
+      if (asked?.kind === 'input-counts-request') {
+        device.send(json(counter.current()));
+        return;
+      }
       if (asked?.kind !== 'claude-usage-request') return;
       if (latest) device.send(json(latest));
     });
@@ -205,6 +216,7 @@ defineExtension({
   },
   stop() {
     clearInterval(timer);
+    input?.stop();
     httpClient?.close();
   },
 });
