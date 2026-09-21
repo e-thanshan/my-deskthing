@@ -22,6 +22,10 @@ declare namespace Deno {
     output(): Promise<CommandOutput>;
   }
 
+  function readTextFile(path: string): Promise<string>;
+
+  const env: { get(key: string): string | undefined };
+
   interface HttpClient {
     close(): void;
   }

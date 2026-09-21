@@ -5,9 +5,12 @@ import { Clock } from '../components/Clock';
 import { Lyrics } from '../components/Lyrics';
 import { NowPlaying } from '../components/NowPlaying';
 import { ProgressBar } from '../components/ProgressBar';
+import { StatsRibbon } from '../components/StatsRibbon';
 import { UsageBars } from '../components/UsageBars';
+import { useInputCounts } from '../hooks/useInputCounts';
 import { useLyrics } from '../hooks/useLyrics';
 import { usePlayer } from '../hooks/usePlayer';
+import { useStats } from '../hooks/useStats';
 import { useSettingsPanel } from '../prefs';
 
 export default function Home() {
@@ -21,14 +24,23 @@ export default function Home() {
   const say = useCallback((text: string) => setFlash(f => ({ n: (f?.n ?? 0) + 1, text })), []);
   const { open: panelOpen } = useSettingsPanel();
 
+  const [ribbonOn, setRibbonOn] = useState(false);
+  const { listenedMs, drinks, drinkPulse, logDrink } = useStats(playing);
+  const input = useInputCounts();
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (panelOpen) return;
       if (e.key === '1') setLyricsOn(on => !on);
+      if (e.key === '2') setRibbonOn(on => !on);
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        logDrink();
+      }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [panelOpen]);
+  }, [panelOpen, logDrink]);
 
   useEffect(() => {
     if (!lyricsOn) return;
@@ -74,6 +86,13 @@ export default function Home() {
           </div>
         )}
         <ProgressBar positionMs={positionMs} durationMs={durationMs} playing={playing} />
+        <StatsRibbon
+          open={ribbonOn}
+          listenedMs={listenedMs}
+          drinks={drinks}
+          drinkPulse={drinkPulse}
+          input={input}
+        />
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 {
   "id": "01a05e05-e70d-7273-8674-39fe176819b2",
   "name": "dash",
-  "version": "0.14.1",
+  "version": "0.15.0",
   "description": "A clean dashboard: clock, now playing, and dial-controlled volume.",
   "settings": "settings.html",
   "config": [],
@@ -14,7 +14,9 @@
     "entry": "extension/desktop.mjs",
     "permissions": [
       "run:security",
-      "net:api.anthropic.com"
+      "net:api.anthropic.com",
+      "env:HOME",
+      "read:~/Library/Application Support/dash-inputcount/counts.json"
     ],
     "api": 1
   }
