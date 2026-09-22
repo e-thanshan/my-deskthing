@@ -1,5 +1,18 @@
 # dash
 
+## 0.15.1
+
+the keys and scrolled cells could sit on a number that had stopped being true. the agent only
+rewrites its file when one of the counts moves, so an idle machine gives the extension nothing to
+forward, and from the device a feed that has gone away looks exactly like an owner who has stopped
+typing: either way nothing arrives. the last reading stayed on screen, presented as live, which is
+what a closed dev server or an older extension without the odometer in it looked like.
+
+the extension now resends its last reading every thirty seconds whether or not it changed, so the
+two cases can be told apart, and the ribbon dims both cells and says it has no reading from the
+computer once three of those heartbeats go unheard. an idle machine keeps showing its totals at
+full strength, because the heartbeat still arrives.
+
 ## 0.15.0
 
 a ribbon of running totals sits under the progress bar, on preset 2. it takes its height from a

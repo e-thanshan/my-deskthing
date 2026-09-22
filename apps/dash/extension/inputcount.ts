@@ -13,6 +13,10 @@ export type InputCounter = {
 
 const POLL_MS = 5_000;
 
+// the agent only rewrites the file when a number moves, so an idle machine produces no change to
+// forward. without a heartbeat the device cannot tell that apart from nobody talking to it.
+const HEARTBEAT_MS = 30_000;
+
 // written by the launchd agent from scripts/install-inputcount.ts. the agent owns the odometer and
 // keeps counting with bridgething closed, so this side only ever reads.
 function countsPath(): string | null {
@@ -55,6 +59,7 @@ function same(a: InputState, b: InputState): boolean {
 export function startInputCounts(ctx: ExtensionContext, onChange: (state: InputState) => void): InputCounter {
   let state: InputState = { kind: 'input-counts', status: 'unavailable' };
   let announced = '';
+  let sentAt = 0;
   const path = countsPath();
 
   const poll = async () => {
@@ -76,8 +81,10 @@ export function startInputCounts(ctx: ExtensionContext, onChange: (state: InputS
         ctx.log.info('input odometer reading', next.keys, 'keys');
       }
     }
-    if (same(state, next)) return;
+    const changed = !same(state, next);
     state = next;
+    if (!changed && Date.now() - sentAt < HEARTBEAT_MS) return;
+    sentAt = Date.now();
     onChange(next);
   };
 

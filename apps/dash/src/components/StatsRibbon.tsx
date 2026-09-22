@@ -22,10 +22,26 @@ function fmtScrolled(points: number): string {
 
 // only the readout fades with the ribbon. the cell keeps its box so a floater launched while the
 // ribbon is shut still has somewhere to launch from.
-function Cell({ label, value, dim, children }: { label: string; value: string; dim: boolean; children?: ReactNode }) {
+function Cell({
+  label,
+  value,
+  dim,
+  muted,
+  children,
+}: {
+  label: string;
+  value: string;
+  dim: boolean;
+  /** The reading is no longer arriving, so show it without claiming it is live. */
+  muted?: boolean;
+  children?: ReactNode;
+}) {
   return (
     <div className="relative flex shrink-0 flex-col">
-      <div className={`flex flex-col gap-0.5 transition-opacity duration-300 ${dim ? 'opacity-0' : 'opacity-100'}`}>
+      <div
+        className={`flex flex-col gap-0.5 transition-opacity duration-300 ${
+          dim ? 'opacity-0' : muted ? 'opacity-40' : 'opacity-100'
+        }`}>
         <span className="font-mono text-eyebrow tracking-[0.25em] text-off-white/45 uppercase">{label}</span>
         <span className="font-mono text-title tabular-nums text-off-white/90">{value}</span>
       </div>
@@ -58,7 +74,12 @@ export function StatsRibbon({
   const endPop = useCallback((id: number) => setPops(list => list.filter(p => p !== id)), []);
 
   const counting = input?.status === 'counting' ? input : null;
-  const asking = input?.status === 'needs-permission';
+  const note =
+    input?.status === 'needs-permission'
+      ? 'input monitoring not granted'
+      : counting?.stale
+        ? 'no reading from the computer'
+        : null;
 
   return (
     <div className="relative">
@@ -80,14 +101,21 @@ export function StatsRibbon({
             </span>
           ))}
         </Cell>
-        {counting && <Cell label="keys" value={fmtInt(counting.keys)} dim={!open} />}
-        {counting && <Cell label="scrolled" value={fmtScrolled(counting.scrollPoints)} dim={!open} />}
-        {asking && (
+        {counting && <Cell label="keys" value={fmtInt(counting.keys)} dim={!open} muted={counting.stale} />}
+        {counting && (
+          <Cell
+            label="scrolled"
+            value={fmtScrolled(counting.scrollPoints)}
+            dim={!open}
+            muted={counting.stale}
+          />
+        )}
+        {note && (
           <span
             className={`ml-auto shrink-0 pb-1 font-mono text-hint text-off-white/35 transition-opacity duration-300 ${
               open ? 'opacity-100' : 'opacity-0'
             }`}>
-            input monitoring not granted
+            {note}
           </span>
         )}
       </div>
