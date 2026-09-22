@@ -1,5 +1,16 @@
 # dash
 
+## 0.15.2
+
+the `+1 drink` popup was drawing on every press with the ribbon shut, exactly as intended, and
+could not be seen doing it. it is ember at seventeen pixels over whatever the album art happens to
+be, and against a sunlit wall that is nothing at all, so a press that worked looked like a press
+that had not registered.
+
+it is now twenty six pixels and bold, and carries its own dark halo in three stacked shadows rather
+than trusting the backdrop to be dark. artwork is any colour it likes and the floater has to hold
+its own against all of it.
+
 ## 0.15.1
 
 the keys and scrolled cells could sit on a number that had stopped being true. the agent only

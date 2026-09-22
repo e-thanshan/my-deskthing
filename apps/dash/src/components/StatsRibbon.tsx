@@ -8,6 +8,13 @@ const POINTS_PER_INCH = 125;
 
 const INCHES_PER_MILE = 63_360;
 
+// the artwork behind this is any colour it likes, and ember on a sunlit wall reads as nothing, so
+// the glyphs carry their own dark halo instead of trusting the backdrop to be dark
+const FLOATER =
+  'pointer-events-none absolute bottom-full whitespace-nowrap font-display text-[26px] font-bold text-ember ' +
+  '[text-shadow:0_0_4px_rgba(0,0,0,0.95),0_0_10px_rgba(0,0,0,0.9),0_2px_16px_rgba(0,0,0,0.75)] ' +
+  'animate-[float-up_1s_ease-out_forwards]';
+
 function fmtInt(value: number): string {
   return Math.max(0, Math.round(value)).toLocaleString('en-US');
 }
@@ -96,7 +103,7 @@ export function StatsRibbon({
               key={id}
               onAnimationEnd={() => endPop(id)}
               style={{ left: `${(id % 3) * 7 - 7}px` }}
-              className="pointer-events-none absolute bottom-full whitespace-nowrap font-display text-row-lg font-semibold text-ember [text-shadow:0_1px_10px_rgba(0,0,0,0.75)] animate-[float-up_1s_ease-out_forwards]">
+              className={FLOATER}>
               +1 drink
             </span>
           ))}
