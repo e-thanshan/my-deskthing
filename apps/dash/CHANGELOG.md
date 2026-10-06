@@ -1,5 +1,26 @@
 # dash
 
+## 0.16.0
+
+the scrolled cell no longer reads in feet and miles. every time the ribbon opens it picks a fresh
+unit, from planck lengths and beard-seconds through barleycorns, smoots and furlongs to trips
+around the world, AU, light-years and kessel runs. the units are dealt from a shuffled deck, so all
+thirty come round before any of them repeats and the same one never shows twice in a row. it stays
+put while the ribbon is open, and the next one fades in with the ribbon.
+
+those units span fifty orders of magnitude, so anything a fixed format would print as a wall of
+zeros or digits goes to three figures of scientific notation instead. the unit's name sits after
+the number in small type.
+
+with a long unit in the cell, the no-reading note could no longer fit beside the value row and
+went off the edge of the screen. it now sits up on the label row at the right, out of the flow,
+where nothing can push it.
+
+the ribbon's labels sat at forty five percent white on the brightest strip of the backdrop, the
+cottage wall and the path in front of it, and mostly disappeared. opening the ribbon now brings up
+the same dark scrim the lyrics use, the labels are at seventy percent, and every glyph on the ribbon
+carries a tight dark edge under its soft shadow so small type holds against the grass.
+
 ## 0.15.2
 
 the `+1 drink` popup was drawing on every press with the ribbon shut, exactly as intended, and

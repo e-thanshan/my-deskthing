@@ -55,7 +55,7 @@ export default function Home() {
     if (text) say(text);
   }, [lyricsOn, status, trackKey, say]);
 
-  const lyricsShowing = (lyricsOn && status === 'ready') || flash != null;
+  const scrimShowing = (lyricsOn && status === 'ready') || flash != null || ribbonOn;
 
   return (
     <div className="relative h-full w-full overflow-hidden bg-bg text-off-white">
@@ -63,7 +63,7 @@ export default function Home() {
       <div className="absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-black/55 to-transparent" />
       <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/50 to-transparent" />
       <div
-        className={`absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-black/70 via-black/35 to-transparent transition-opacity duration-500 ${lyricsShowing ? 'opacity-100' : 'opacity-0'}`}
+        className={`absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-black/70 via-black/35 to-transparent transition-opacity duration-500 ${scrimShowing ? 'opacity-100' : 'opacity-0'}`}
       />
       <div className="relative flex h-full w-full flex-col p-8">
         <div className="flex items-start">
