@@ -1,7 +1,7 @@
 {
   "$schema": "https://apps.bridgething.com/schemas/catalog/v1.json",
   "schema": "catalog.v1",
-  "updated_at": "2026-09-22T17:47:05.890Z",
+  "updated_at": "2026-10-06T16:36:24.972Z",
   "repo": {
     "name": "Eshan's Car Thing Apps",
     "description": "Webapps for Eshan's Spotify Car Thing.",
@@ -18,6 +18,32 @@
       "homepage": "https://github.com/e-thanshan/my-deskthing",
       "source": "https://github.com/e-thanshan/my-deskthing",
       "versions": [
+        {
+          "version": "0.16.0",
+          "released_at": "2026-10-06T16:36:24.942Z",
+          "download": {
+            "url": "https://e-thanshan.github.io/my-deskthing/r/01a05e05-e70d-7273-8674-39fe176819b2/0.16.0.zip",
+            "size": 1619925,
+            "sha256": "865e36194c0d3df4fc288af8f257b2c769debb0d5bc71ca5c17869b590f5aa11"
+          },
+          "settings": {
+            "url": "https://e-thanshan.github.io/my-deskthing/s/01a05e05-e70d-7273-8674-39fe176819b2/0.16.0.html",
+            "size": 26911,
+            "sha256": "ac6b1d3b7c3857f8b6e87cb2a04f4623abaf200ecade3e2035489f747162b683"
+          },
+          "permissions": [],
+          "extension": {
+            "desktop": true,
+            "permissions": [
+              "run:security",
+              "net:api.anthropic.com",
+              "env:HOME",
+              "read:~/Library/Application Support/dash-inputcount/counts.json"
+            ]
+          },
+          "min_libbridgething_version": "0.12.1",
+          "changelog": "the scrolled cell no longer reads in feet and miles. every time the ribbon opens it picks a fresh\nunit, from planck lengths and beard-seconds through barleycorns, smoots and furlongs to trips\naround the world, AU, light-years and kessel runs. the units are dealt from a shuffled deck, so all\nthirty come round before any of them repeats and the same one never shows twice in a row. it stays\nput while the ribbon is open, and the next one fades in with the ribbon.\n\nthose units span fifty orders of magnitude, so anything a fixed format would print as a wall of\nzeros or digits goes to three figures of scientific notation instead. the unit's name sits after\nthe number in small type.\n\nwith a long unit in the cell, the no-reading note could no longer fit beside the value row and\nwent off the edge of the screen. it now sits up on the label row at the right, out of the flow,\nwhere nothing can push it.\n\nthe ribbon's labels sat at forty five percent white on the brightest strip of the backdrop, the\ncottage wall and the path in front of it, and mostly disappeared. opening the ribbon now brings up\nthe same dark scrim the lyrics use, the labels are at seventy percent, and every glyph on the ribbon\ncarries a tight dark edge under its soft shadow so small type holds against the grass."
+        },
         {
           "version": "0.15.2",
           "released_at": "2026-09-22T17:47:05.886Z",
