@@ -1,5 +1,7 @@
 import { asJson, defineExtension, json } from '@bridgething/extension';
+import { closeHttpClient, describeError, keychainClient } from './http.ts';
 import { startInputCounts, type InputCounter } from './inputcount.ts';
+import { startPainting, type PaintingFeed } from './painting.ts';
 
 const ENDPOINT = 'https://api.anthropic.com/api/oauth/usage';
 const KEYCHAIN_SERVICE = 'Claude Code-credentials';
@@ -26,35 +28,6 @@ async function readToken(): Promise<string | null> {
   } catch {
     return null;
   }
-}
-
-// deno carries its own root store and never consults the macos keychain, so on a network
-// that intercepts tls every fetch dies with UnknownIssuer. hand it the keychain's roots,
-// which `security` can export without any permission beyond the run grant already held.
-let clientResolved = false;
-let httpClient: Deno.HttpClient | undefined;
-
-async function keychainClient(): Promise<Deno.HttpClient | undefined> {
-  if (clientResolved) return httpClient;
-  clientResolved = true;
-  if (Deno.build.os !== 'darwin') return undefined;
-  try {
-    const out = await new Deno.Command('security', {
-      args: ['find-certificate', '-a', '-p'],
-      stdout: 'piped',
-      stderr: 'null',
-    }).output();
-    if (!out.success) return undefined;
-    const caCerts = new TextDecoder()
-      .decode(out.stdout)
-      .split(/(?=-----BEGIN CERTIFICATE-----)/)
-      .map(block => block.trim())
-      .filter(block => block.startsWith('-----BEGIN CERTIFICATE-----'));
-    if (caCerts.length > 0) httpClient = Deno.createHttpClient({ caCerts });
-  } catch {
-    httpClient = undefined;
-  }
-  return httpClient;
 }
 
 // resets_at arrives as an iso timestamp, but tolerate epoch seconds or ms
@@ -140,6 +113,7 @@ function describe(usage: Usage): string {
 
 let timer: ReturnType<typeof setInterval> | undefined;
 let input: InputCounter | undefined;
+let paintings: PaintingFeed | undefined;
 
 defineExtension({
   async start(ctx) {
@@ -153,11 +127,19 @@ defineExtension({
     const counter = startInputCounts(ctx, state => ctx.broadcast(json(state)));
     input = counter;
 
+    // the image runs to hundreds of kilobytes, so a device is offered the id and asks for the
+    // painting only when it does not already hold that one
+    const offer = (id: string) => json({ kind: 'painting-offer', id });
+    const feed = startPainting(ctx, (painting, fresh) => ctx.broadcast(fresh ? json(painting) : offer(painting.id)));
+    paintings = feed;
+
     // a forward only reaches the active webapp, so resend whenever a device turns up
     ctx.on('device', event => {
       if (!event.device.active) return;
       push();
       event.device.send(json(counter.current()));
+      const painting = feed.current();
+      if (painting) event.device.send(offer(painting.id));
     });
 
     // a page that loads between polls would otherwise sit empty until the next one, so
@@ -166,6 +148,11 @@ defineExtension({
       const asked = asJson(message) as Record<string, unknown> | undefined;
       if (asked?.kind === 'input-counts-request') {
         device.send(json(counter.current()));
+        return;
+      }
+      if (asked?.kind === 'painting-request') {
+        const painting = feed.current();
+        if (painting && painting.id !== asked.have) device.send(json(painting));
         return;
       }
       if (asked?.kind !== 'claude-usage-request') return;
@@ -199,9 +186,7 @@ defineExtension({
         await ctx.kv.set(CACHE_KEY, latest);
         push();
       } catch (err) {
-        // deno buries the real transport failure (tls, dns, refused) in `cause`
-        const cause = (err as { cause?: { message?: string } })?.cause?.message;
-        ctx.log.warn('usage fetch threw', String(err), cause ? `cause: ${cause}` : '');
+        ctx.log.warn('usage fetch threw', describeError(err));
       }
     };
 
@@ -217,6 +202,7 @@ defineExtension({
   stop() {
     clearInterval(timer);
     input?.stop();
-    httpClient?.close();
+    paintings?.stop();
+    closeHttpClient();
   },
 });

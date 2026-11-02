@@ -1,7 +1,7 @@
 {
   "id": "01a05e05-e70d-7273-8674-39fe176819b2",
   "name": "dash",
-  "version": "0.16.0",
+  "version": "0.17.0",
   "description": "A clean dashboard: clock, now playing, and dial-controlled volume.",
   "settings": "settings.html",
   "config": [],
@@ -15,6 +15,12 @@
     "permissions": [
       "run:security",
       "net:api.anthropic.com",
+      "net:api.artic.edu",
+      "net:www.artic.edu",
+      "net:openaccess-api.clevelandart.org",
+      "net:openaccess-cdn.clevelandart.org",
+      "net:collectionapi.metmuseum.org",
+      "net:images.metmuseum.org",
       "env:HOME",
       "read:~/Library/Application Support/dash-inputcount/counts.json"
     ],

@@ -1,26 +1,37 @@
-import background from '../assets/background.jpg';
-import { LivePhoto } from './LivePhoto';
+import { useEffect, useState } from 'react';
 
-// ---------------------------------------------------------------------------
-// to change the background, replace src/assets/background.jpg (landscape,
-// roughly 800x480 or larger; the build inlines it, so it works offline on the
-// device - the webview has no direct internet, so never hot-link a url).
-// the LivePhoto motion masks in LivePhoto.tsx are tuned to this photo and
-// need re-tuning for a new one.
-//
-// false renders the image as a plain still; true warps it gently in webgl
-// (drifting clouds, swaying foliage), falling back to the still on any failure
-// ---------------------------------------------------------------------------
-const ANIMATE_BACKGROUND = true;
+type Layer = { id: string; src: string; ready: boolean };
 
-export function Backdrop() {
+/**
+ * Full-bleed backdrop image. A new image fades in over the one before it, which is dropped once
+ * it is covered. With no image yet the page's own background shows through.
+ */
+export function Backdrop({ image }: { image: { id: string; src: string } | null }) {
+  const [layers, setLayers] = useState<Layer[]>([]);
+
+  useEffect(() => {
+    if (!image) return;
+    setLayers(ls => (ls.at(-1)?.id === image.id ? ls : [...ls, { id: image.id, src: image.src, ready: false }]));
+  }, [image]);
+
   return (
     <div aria-hidden className="absolute inset-0">
-      {ANIMATE_BACKGROUND ? (
-        <LivePhoto src={background} />
-      ) : (
-        <img src={background} alt="" className="h-full w-full object-cover" />
-      )}
+      {layers.map(layer => (
+        <img
+          key={layer.id}
+          src={layer.src}
+          alt=""
+          decoding="async"
+          onLoad={() => setLayers(ls => ls.map(l => (l.id === layer.id ? { ...l, ready: true } : l)))}
+          onTransitionEnd={() =>
+            setLayers(ls => {
+              const at = ls.findIndex(l => l.id === layer.id);
+              return at > 0 ? ls.slice(at) : ls;
+            })
+          }
+          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[1500ms] ${layer.ready ? 'opacity-100' : 'opacity-0'}`}
+        />
+      ))}
     </div>
   );
 }

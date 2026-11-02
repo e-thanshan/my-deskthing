@@ -1,5 +1,27 @@
 # dash
 
+## 0.17.0
+
+the backdrop is a landscape painting now, and a different one every day. the desktop extension
+picks it from the open collections of the art institute of chicago, the cleveland museum of art
+and the met, taking each museum in turn and falling through to the next when one is down. it only
+keeps a painting wider than it is tall, big enough to fill the screen without blurring, and one
+that has not been shown in the last year. a line above the progress bar credits it: the title,
+the artist and date, and the museum. it steps aside while lyrics are up.
+
+the car thing has no internet of its own, so the computer fetches the painting and hands it over
+the cable. the device keeps the last one it was given, and a screen that boots with the desktop
+app closed still shows that painting rather than an empty background. the computer checks the date
+every quarter of an hour, so a machine that slept through midnight catches up when it wakes, and
+the new painting fades in over the old.
+
+reaching the museums takes six more hosts in the extension's network permissions, which the
+desktop app asks you to confirm on install.
+
+the cottage that swayed in the wind is retired. its photo and the webgl warp that moved it live on
+in `archive/living-photo`, outside the build, with a note on putting them back. dropping the
+photo makes the bundle about 340 KB lighter.
+
 ## 0.16.0
 
 the scrolled cell no longer reads in feet and miles. every time the ribbon opens it picks a fresh

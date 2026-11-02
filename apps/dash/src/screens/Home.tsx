@@ -4,11 +4,13 @@ import { Backdrop } from '../components/Backdrop';
 import { Clock } from '../components/Clock';
 import { Lyrics } from '../components/Lyrics';
 import { NowPlaying } from '../components/NowPlaying';
+import { PaintingCredit } from '../components/PaintingCredit';
 import { ProgressBar } from '../components/ProgressBar';
 import { StatsRibbon } from '../components/StatsRibbon';
 import { UsageBars } from '../components/UsageBars';
 import { useInputCounts } from '../hooks/useInputCounts';
 import { useLyrics } from '../hooks/useLyrics';
+import { usePainting } from '../hooks/usePainting';
 import { usePlayer } from '../hooks/usePlayer';
 import { useStats } from '../hooks/useStats';
 import { useSettingsPanel } from '../prefs';
@@ -27,6 +29,7 @@ export default function Home() {
   const [ribbonOn, setRibbonOn] = useState(false);
   const { listenedMs, drinks, drinkPulse, logDrink } = useStats(playing);
   const input = useInputCounts();
+  const painting = usePainting();
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -55,11 +58,13 @@ export default function Home() {
     if (text) say(text);
   }, [lyricsOn, status, trackKey, say]);
 
+  const lyricsShowing = lyricsOn && status === 'ready' && lines != null;
+  const creditShowing = painting != null && !lyricsShowing;
   const scrimShowing = (lyricsOn && status === 'ready') || flash != null || ribbonOn;
 
   return (
     <div className="relative h-full w-full overflow-hidden bg-bg text-off-white">
-      <Backdrop />
+      <Backdrop image={painting} />
       <div className="absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-black/55 to-transparent" />
       <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/50 to-transparent" />
       <div
@@ -76,13 +81,18 @@ export default function Home() {
           </div>
         </div>
         <div className="flex-1" />
-        {lyricsOn && status === 'ready' && lines && <Lyrics lines={lines} positionMs={positionMs} />}
-        {flash && (
-          <div
-            key={flash.n}
-            onAnimationEnd={() => setFlash(null)}
-            className="mb-3 truncate font-book text-lg text-off-white/75 [text-shadow:0_1px_8px_rgba(0,0,0,0.6)] animate-[fade-out-hold_1.6s_ease-out_forwards]">
-            {flash.text}
+        {lyricsShowing && <Lyrics lines={lines} positionMs={positionMs} />}
+        {(flash || creditShowing) && (
+          <div className="mb-3 flex items-end gap-6">
+            {flash && (
+              <div
+                key={flash.n}
+                onAnimationEnd={() => setFlash(null)}
+                className="min-w-0 flex-1 truncate font-book text-lg text-off-white/75 [text-shadow:0_1px_8px_rgba(0,0,0,0.6)] animate-[fade-out-hold_1.6s_ease-out_forwards]">
+                {flash.text}
+              </div>
+            )}
+            {creditShowing && <PaintingCredit painting={painting} />}
           </div>
         )}
         <ProgressBar positionMs={positionMs} durationMs={durationMs} playing={playing} />
