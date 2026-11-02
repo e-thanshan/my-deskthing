@@ -1,7 +1,7 @@
 {
   "$schema": "https://apps.bridgething.com/schemas/catalog/v1.json",
   "schema": "catalog.v1",
-  "updated_at": "2026-10-06T16:36:24.972Z",
+  "updated_at": "2026-11-02T23:48:49.685Z",
   "repo": {
     "name": "Eshan's Car Thing Apps",
     "description": "Webapps for Eshan's Spotify Car Thing.",
@@ -18,6 +18,38 @@
       "homepage": "https://github.com/e-thanshan/my-deskthing",
       "source": "https://github.com/e-thanshan/my-deskthing",
       "versions": [
+        {
+          "version": "0.17.0",
+          "released_at": "2026-11-02T23:48:49.682Z",
+          "download": {
+            "url": "https://e-thanshan.github.io/my-deskthing/r/01a05e05-e70d-7273-8674-39fe176819b2/0.17.0.zip",
+            "size": 1277002,
+            "sha256": "0955507dfc53295452d786cbc0b26a51661ad135ef056bcbfbe29d73bbbc3ef0"
+          },
+          "settings": {
+            "url": "https://e-thanshan.github.io/my-deskthing/s/01a05e05-e70d-7273-8674-39fe176819b2/0.17.0.html",
+            "size": 26911,
+            "sha256": "ac6b1d3b7c3857f8b6e87cb2a04f4623abaf200ecade3e2035489f747162b683"
+          },
+          "permissions": [],
+          "extension": {
+            "desktop": true,
+            "permissions": [
+              "run:security",
+              "net:api.anthropic.com",
+              "net:api.artic.edu",
+              "net:www.artic.edu",
+              "net:openaccess-api.clevelandart.org",
+              "net:openaccess-cdn.clevelandart.org",
+              "net:collectionapi.metmuseum.org",
+              "net:images.metmuseum.org",
+              "env:HOME",
+              "read:~/Library/Application Support/dash-inputcount/counts.json"
+            ]
+          },
+          "min_libbridgething_version": "0.12.1",
+          "changelog": "the backdrop is a landscape painting now, and a different one every day. the desktop extension\npicks it from the open collections of the art institute of chicago, the cleveland museum of art\nand the met, taking each museum in turn and falling through to the next when one is down. it only\nkeeps a painting wider than it is tall, big enough to fill the screen without blurring, and one\nthat has not been shown in the last year. a line above the progress bar credits it: the title,\nthe artist and date, and the museum. it steps aside while lyrics are up.\n\nthe car thing has no internet of its own, so the computer fetches the painting and hands it over\nthe cable. the device keeps the last one it was given, and a screen that boots with the desktop\napp closed still shows that painting rather than an empty background. the computer checks the date\nevery quarter of an hour, so a machine that slept through midnight catches up when it wakes, and\nthe new painting fades in over the old.\n\nreaching the museums takes six more hosts in the extension's network permissions, which the\ndesktop app asks you to confirm on install.\n\nthe cottage that swayed in the wind is retired. its photo and the webgl warp that moved it live on\nin `archive/living-photo`, outside the build, with a note on putting them back. dropping the\nphoto makes the bundle about 340 KB lighter."
+        },
         {
           "version": "0.16.0",
           "released_at": "2026-10-06T16:36:24.942Z",
@@ -37,6 +69,12 @@
             "permissions": [
               "run:security",
               "net:api.anthropic.com",
+              "net:api.artic.edu",
+              "net:www.artic.edu",
+              "net:openaccess-api.clevelandart.org",
+              "net:openaccess-cdn.clevelandart.org",
+              "net:collectionapi.metmuseum.org",
+              "net:images.metmuseum.org",
               "env:HOME",
               "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
@@ -63,6 +101,12 @@
             "permissions": [
               "run:security",
               "net:api.anthropic.com",
+              "net:api.artic.edu",
+              "net:www.artic.edu",
+              "net:openaccess-api.clevelandart.org",
+              "net:openaccess-cdn.clevelandart.org",
+              "net:collectionapi.metmuseum.org",
+              "net:images.metmuseum.org",
               "env:HOME",
               "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
@@ -89,6 +133,12 @@
             "permissions": [
               "run:security",
               "net:api.anthropic.com",
+              "net:api.artic.edu",
+              "net:www.artic.edu",
+              "net:openaccess-api.clevelandart.org",
+              "net:openaccess-cdn.clevelandart.org",
+              "net:collectionapi.metmuseum.org",
+              "net:images.metmuseum.org",
               "env:HOME",
               "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
@@ -115,6 +165,12 @@
             "permissions": [
               "run:security",
               "net:api.anthropic.com",
+              "net:api.artic.edu",
+              "net:www.artic.edu",
+              "net:openaccess-api.clevelandart.org",
+              "net:openaccess-cdn.clevelandart.org",
+              "net:collectionapi.metmuseum.org",
+              "net:images.metmuseum.org",
               "env:HOME",
               "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
@@ -141,6 +197,12 @@
             "permissions": [
               "run:security",
               "net:api.anthropic.com",
+              "net:api.artic.edu",
+              "net:www.artic.edu",
+              "net:openaccess-api.clevelandart.org",
+              "net:openaccess-cdn.clevelandart.org",
+              "net:collectionapi.metmuseum.org",
+              "net:images.metmuseum.org",
               "env:HOME",
               "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
@@ -167,6 +229,12 @@
             "permissions": [
               "run:security",
               "net:api.anthropic.com",
+              "net:api.artic.edu",
+              "net:www.artic.edu",
+              "net:openaccess-api.clevelandart.org",
+              "net:openaccess-cdn.clevelandart.org",
+              "net:collectionapi.metmuseum.org",
+              "net:images.metmuseum.org",
               "env:HOME",
               "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
@@ -193,6 +261,12 @@
             "permissions": [
               "run:security",
               "net:api.anthropic.com",
+              "net:api.artic.edu",
+              "net:www.artic.edu",
+              "net:openaccess-api.clevelandart.org",
+              "net:openaccess-cdn.clevelandart.org",
+              "net:collectionapi.metmuseum.org",
+              "net:images.metmuseum.org",
               "env:HOME",
               "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
@@ -219,6 +293,12 @@
             "permissions": [
               "run:security",
               "net:api.anthropic.com",
+              "net:api.artic.edu",
+              "net:www.artic.edu",
+              "net:openaccess-api.clevelandart.org",
+              "net:openaccess-cdn.clevelandart.org",
+              "net:collectionapi.metmuseum.org",
+              "net:images.metmuseum.org",
               "env:HOME",
               "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
@@ -245,6 +325,12 @@
             "permissions": [
               "run:security",
               "net:api.anthropic.com",
+              "net:api.artic.edu",
+              "net:www.artic.edu",
+              "net:openaccess-api.clevelandart.org",
+              "net:openaccess-cdn.clevelandart.org",
+              "net:collectionapi.metmuseum.org",
+              "net:images.metmuseum.org",
               "env:HOME",
               "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
@@ -271,6 +357,12 @@
             "permissions": [
               "run:security",
               "net:api.anthropic.com",
+              "net:api.artic.edu",
+              "net:www.artic.edu",
+              "net:openaccess-api.clevelandart.org",
+              "net:openaccess-cdn.clevelandart.org",
+              "net:collectionapi.metmuseum.org",
+              "net:images.metmuseum.org",
               "env:HOME",
               "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
@@ -297,6 +389,12 @@
             "permissions": [
               "run:security",
               "net:api.anthropic.com",
+              "net:api.artic.edu",
+              "net:www.artic.edu",
+              "net:openaccess-api.clevelandart.org",
+              "net:openaccess-cdn.clevelandart.org",
+              "net:collectionapi.metmuseum.org",
+              "net:images.metmuseum.org",
               "env:HOME",
               "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
@@ -323,6 +421,12 @@
             "permissions": [
               "run:security",
               "net:api.anthropic.com",
+              "net:api.artic.edu",
+              "net:www.artic.edu",
+              "net:openaccess-api.clevelandart.org",
+              "net:openaccess-cdn.clevelandart.org",
+              "net:collectionapi.metmuseum.org",
+              "net:images.metmuseum.org",
               "env:HOME",
               "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
@@ -349,6 +453,12 @@
             "permissions": [
               "run:security",
               "net:api.anthropic.com",
+              "net:api.artic.edu",
+              "net:www.artic.edu",
+              "net:openaccess-api.clevelandart.org",
+              "net:openaccess-cdn.clevelandart.org",
+              "net:collectionapi.metmuseum.org",
+              "net:images.metmuseum.org",
               "env:HOME",
               "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
@@ -375,6 +485,12 @@
             "permissions": [
               "run:security",
               "net:api.anthropic.com",
+              "net:api.artic.edu",
+              "net:www.artic.edu",
+              "net:openaccess-api.clevelandart.org",
+              "net:openaccess-cdn.clevelandart.org",
+              "net:collectionapi.metmuseum.org",
+              "net:images.metmuseum.org",
               "env:HOME",
               "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
@@ -401,6 +517,12 @@
             "permissions": [
               "run:security",
               "net:api.anthropic.com",
+              "net:api.artic.edu",
+              "net:www.artic.edu",
+              "net:openaccess-api.clevelandart.org",
+              "net:openaccess-cdn.clevelandart.org",
+              "net:collectionapi.metmuseum.org",
+              "net:images.metmuseum.org",
               "env:HOME",
               "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
@@ -427,6 +549,12 @@
             "permissions": [
               "run:security",
               "net:api.anthropic.com",
+              "net:api.artic.edu",
+              "net:www.artic.edu",
+              "net:openaccess-api.clevelandart.org",
+              "net:openaccess-cdn.clevelandart.org",
+              "net:collectionapi.metmuseum.org",
+              "net:images.metmuseum.org",
               "env:HOME",
               "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
@@ -453,6 +581,12 @@
             "permissions": [
               "run:security",
               "net:api.anthropic.com",
+              "net:api.artic.edu",
+              "net:www.artic.edu",
+              "net:openaccess-api.clevelandart.org",
+              "net:openaccess-cdn.clevelandart.org",
+              "net:collectionapi.metmuseum.org",
+              "net:images.metmuseum.org",
               "env:HOME",
               "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
@@ -479,6 +613,12 @@
             "permissions": [
               "run:security",
               "net:api.anthropic.com",
+              "net:api.artic.edu",
+              "net:www.artic.edu",
+              "net:openaccess-api.clevelandart.org",
+              "net:openaccess-cdn.clevelandart.org",
+              "net:collectionapi.metmuseum.org",
+              "net:images.metmuseum.org",
               "env:HOME",
               "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
@@ -505,6 +645,12 @@
             "permissions": [
               "run:security",
               "net:api.anthropic.com",
+              "net:api.artic.edu",
+              "net:www.artic.edu",
+              "net:openaccess-api.clevelandart.org",
+              "net:openaccess-cdn.clevelandart.org",
+              "net:collectionapi.metmuseum.org",
+              "net:images.metmuseum.org",
               "env:HOME",
               "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
@@ -531,6 +677,12 @@
             "permissions": [
               "run:security",
               "net:api.anthropic.com",
+              "net:api.artic.edu",
+              "net:www.artic.edu",
+              "net:openaccess-api.clevelandart.org",
+              "net:openaccess-cdn.clevelandart.org",
+              "net:collectionapi.metmuseum.org",
+              "net:images.metmuseum.org",
               "env:HOME",
               "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
@@ -557,6 +709,12 @@
             "permissions": [
               "run:security",
               "net:api.anthropic.com",
+              "net:api.artic.edu",
+              "net:www.artic.edu",
+              "net:openaccess-api.clevelandart.org",
+              "net:openaccess-cdn.clevelandart.org",
+              "net:collectionapi.metmuseum.org",
+              "net:images.metmuseum.org",
               "env:HOME",
               "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
@@ -583,6 +741,12 @@
             "permissions": [
               "run:security",
               "net:api.anthropic.com",
+              "net:api.artic.edu",
+              "net:www.artic.edu",
+              "net:openaccess-api.clevelandart.org",
+              "net:openaccess-cdn.clevelandart.org",
+              "net:collectionapi.metmuseum.org",
+              "net:images.metmuseum.org",
               "env:HOME",
               "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
@@ -609,6 +773,12 @@
             "permissions": [
               "run:security",
               "net:api.anthropic.com",
+              "net:api.artic.edu",
+              "net:www.artic.edu",
+              "net:openaccess-api.clevelandart.org",
+              "net:openaccess-cdn.clevelandart.org",
+              "net:collectionapi.metmuseum.org",
+              "net:images.metmuseum.org",
               "env:HOME",
               "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
@@ -635,6 +805,12 @@
             "permissions": [
               "run:security",
               "net:api.anthropic.com",
+              "net:api.artic.edu",
+              "net:www.artic.edu",
+              "net:openaccess-api.clevelandart.org",
+              "net:openaccess-cdn.clevelandart.org",
+              "net:collectionapi.metmuseum.org",
+              "net:images.metmuseum.org",
               "env:HOME",
               "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
@@ -661,6 +837,12 @@
             "permissions": [
               "run:security",
               "net:api.anthropic.com",
+              "net:api.artic.edu",
+              "net:www.artic.edu",
+              "net:openaccess-api.clevelandart.org",
+              "net:openaccess-cdn.clevelandart.org",
+              "net:collectionapi.metmuseum.org",
+              "net:images.metmuseum.org",
               "env:HOME",
               "read:~/Library/Application Support/dash-inputcount/counts.json"
             ]
