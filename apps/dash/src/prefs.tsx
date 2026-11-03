@@ -17,16 +17,20 @@ import { useBridge } from './bridge';
 export type Prefs = {
   nightShift: number;
   autoOff: number;
+  /** 1 shows the whole painting over a blurred copy of itself, 0 fills the screen and crops. */
+  paintingFit: number;
 };
 
 export const PREF_RANGE: { [K in keyof Prefs]: { min: number; max: number } } = {
   nightShift: { min: 0, max: 10 },
   autoOff: { min: -1, max: 47 },
+  paintingFit: { min: 0, max: 1 },
 };
 
 const DEFAULTS: Prefs = {
   nightShift: 3,
   autoOff: 35,
+  paintingFit: 0,
 };
 
 // autoOff counts half hours from midnight, so one detent is 30 minutes and the day is 48 steps

@@ -24,6 +24,8 @@ declare namespace Deno {
 
   function readTextFile(path: string): Promise<string>;
 
+  function writeTextFile(path: string, data: string, options?: { append?: boolean; createNew?: boolean }): Promise<void>;
+
   const env: { get(key: string): string | undefined };
 
   interface HttpClient {

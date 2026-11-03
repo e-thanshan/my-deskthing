@@ -1,7 +1,7 @@
 {
   "id": "01a05e05-e70d-7273-8674-39fe176819b2",
   "name": "dash",
-  "version": "0.17.1",
+  "version": "0.18.0",
   "description": "A clean dashboard: clock, now playing, and dial-controlled volume.",
   "settings": "settings.html",
   "config": [],
@@ -22,6 +22,7 @@
       "net:api.smk.dk",
       "net:iip.smk.dk",
       "env:HOME",
+      "write:~/dash-paintings.md",
       "read:~/Library/Application Support/dash-inputcount/counts.json"
     ],
     "api": 1

@@ -1,5 +1,44 @@
 # dash
 
+## 0.18.0
+
+preset 3 belongs to the painting now. hold it for half a second and everything but the painting
+fades away, the song, the clock, the bar and the ribbon, leaving the credit line so you still know
+what you are looking at. the credit slides down into the corner the bar leaves empty, however
+far that is with the ribbon open or shut. let go and it all fades back, and the credit rises to
+its place above the bar. the volume dial and the other presets carry
+on as normal underneath.
+
+a tap opens a menu for the painting, and another tap closes it, as does back. the left half holds
+the title, the artist and date, and the museum's own description of the work where the museum
+writes one, which chicago and cleveland mostly do. the right half has four things to turn to:
+
+- another painting finds a different one for today. each skip starts from the next museum along,
+  so three in a row visit all three collections, and a skipped painting never comes back as the
+  replacement.
+- previous painting undoes that, and also reaches back to yesterday's. the last three are kept.
+- save to list writes the painting to `~/dash-paintings.md` on the computer, with the museum's
+  page for it and the description underneath, and only ever once.
+- whole painting shows the entire canvas instead of filling the screen, sat on a blurred and
+  darkened copy of itself, for the paintings the crop treats badly. it is remembered.
+
+the dial belongs to the menu while it is open. preset 4 closes it on its way to the settings,
+and preset 3 closes the settings on its way to the menu. the first three actions need the
+computer, so with the desktop app closed the menu says so after a few seconds rather than
+waiting forever.
+
+cleveland's search matches the word landscape anywhere in a record, and once handed over a page of
+calligraphy. a cleveland painting now also has to read as a landscape in its titles or its
+descriptions, and calligraphy, portraits and still lifes are turned away by name. the national
+gallery of denmark marks its english titles in danish, as `engelsk`, which the picker had been
+reading past to the danish title. it now finds the english one, and prefers paintings that have
+one. some of denmark's works survive online only as an old black and white photograph, and those
+are passed over too: the museum publishes a palette for each image, and theirs is all greys.
+
+the list lives in the home folder rather than documents because macos keeps background processes
+out of documents, desktop and downloads, and the extension is one. writing it adds one file to the
+extension's permissions, `~/dash-paintings.md`, which the desktop app asks you to confirm.
+
 ## 0.17.1
 
 of the three museums 0.17.0 drew from, only cleveland was ever handing over a painting. the met has

@@ -2,6 +2,7 @@ import { asJson, defineExtension, json } from '@bridgething/extension';
 import { closeHttpClient, describeError, keychainClient } from './http.ts';
 import { startInputCounts, type InputCounter } from './inputcount.ts';
 import { startPainting, type PaintingFeed } from './painting.ts';
+import { savePainting } from './saved.ts';
 
 const ENDPOINT = 'https://api.anthropic.com/api/oauth/usage';
 const KEYCHAIN_SERVICE = 'Claude Code-credentials';
@@ -151,8 +152,32 @@ defineExtension({
         return;
       }
       if (asked?.kind === 'painting-request') {
-        const painting = feed.current();
+        const painting = feed.message();
         if (painting && painting.id !== asked.have) device.send(json(painting));
+        return;
+      }
+      // a new painting answers a skip or a step back by arriving, so only the other outcomes reply.
+      // the first reply is immediate, which is how the device tells a slow search from no computer.
+      const status = (state: string) => device.send(json({ kind: 'painting-status', state }));
+      if (asked?.kind === 'painting-skip') {
+        status('working');
+        void feed.skip().then(r => r !== 'ok' && status(r === 'busy' ? 'busy' : 'skip-failed'));
+        return;
+      }
+      if (asked?.kind === 'painting-previous') {
+        status('working');
+        void feed.back().then(r => r !== 'ok' && status(r === 'busy' ? 'busy' : 'no-previous'));
+        return;
+      }
+      if (asked?.kind === 'painting-save') {
+        const painting = feed.current();
+        if (!painting || painting.id !== asked.id) {
+          status('save-failed');
+          return;
+        }
+        void savePainting(ctx, painting).then(r =>
+          status(r === 'saved' ? 'saved' : r === 'already' ? 'already-saved' : 'save-failed'),
+        );
         return;
       }
       if (asked?.kind !== 'claude-usage-request') return;
