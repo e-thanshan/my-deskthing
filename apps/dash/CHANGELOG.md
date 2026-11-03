@@ -1,5 +1,24 @@
 # dash
 
+## 0.17.1
+
+of the three museums 0.17.0 drew from, only cleveland was ever handing over a painting. the met has
+retired its public collection api and now answers every search with `410 gone`, and the art
+institute of chicago's image server refused each download until it was told who was asking. the
+met is replaced by the national gallery of denmark, whose open collection has some fifteen hundred
+public domain landscape paintings, and the chicago downloads now carry the identifying header that
+museum asks api clients to send. all three come through.
+
+the denmark collection files its painters surname first, so the credit flips them back to read
+the way a name is said.
+
+the network permissions swap the met's two hosts for denmark's, `api.smk.dk` and `iip.smk.dk`, so
+the desktop app asks you to confirm the change.
+
+the credit line sat at sixty percent white and thinned out to almost nothing over a sunlit
+foreground. it is at seventy now with the title at eighty five, the same lift the ribbon's labels
+needed in 0.16.0.
+
 ## 0.17.0
 
 the backdrop is a landscape painting now, and a different one every day. the desktop extension

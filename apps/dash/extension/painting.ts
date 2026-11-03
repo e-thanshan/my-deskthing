@@ -28,6 +28,7 @@ type Candidate = {
   date: string;
   museum: string;
   image: string;
+  headers?: Record<string, string>;
   width?: number;
   height?: number;
 };
@@ -145,6 +146,7 @@ async function* artInstitute(): AsyncGenerator<Candidate> {
       museum: 'Art Institute of Chicago',
       // 843 is the width the iiif server keeps cached, and the one it asks clients to use
       image: `${iiif}/${imageId}/full/843,/0/default.jpg`,
+      headers: { 'aic-user-agent': UA },
       width: num(thumb.width),
       height: num(thumb.height),
     };
@@ -180,45 +182,60 @@ async function* cleveland(): AsyncGenerator<Candidate> {
   }
 }
 
-const MET_IDS_KEY = 'met-ids';
-const MET_IDS_MS = 7 * 24 * 3_600_000;
-
-async function metIds(deps: Deps): Promise<number[]> {
-  const cached = (await deps.kv.get(MET_IDS_KEY)) as { at?: unknown; ids?: unknown } | undefined;
-  if (cached && typeof cached.at === 'number' && Date.now() - cached.at < MET_IDS_MS && Array.isArray(cached.ids)) {
-    return cached.ids.filter((id): id is number => typeof id === 'number');
-  }
-  const body = await getJson(
-    'https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&medium=Paintings&q=landscape',
-  );
-  const ids =
-    isRecord(body) && Array.isArray(body.objectIDs)
-      ? body.objectIDs.filter((id): id is number => typeof id === 'number')
-      : [];
-  if (ids.length > 0) await deps.kv.set(MET_IDS_KEY, { at: Date.now(), ids });
-  return ids;
+// smk files makers surname first, "Christensen, Godfred"
+function smkName(maker: Record<string, unknown> | undefined): string {
+  const fore = str(maker?.creator_forename);
+  const sur = str(maker?.creator_surname);
+  if (fore && sur) return `${fore} ${sur}`;
+  const parts = str(maker?.creator).split(', ');
+  return parts.length === 2 ? `${parts[1]} ${parts[0]}` : str(maker?.creator);
 }
 
-async function* met(deps: Deps): AsyncGenerator<Candidate> {
-  const ids = await metIds(deps);
-  for (const id of shuffle([...ids]).slice(0, TRIES_PER_SOURCE * 2)) {
-    let row: unknown;
-    try {
-      row = await getJson(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${id}`);
-    } catch (err) {
-      deps.log.debug('met object', id, describeError(err));
-      continue;
+async function* smk(deps: Deps): AsyncGenerator<Candidate> {
+  const ask = (keys: string, kind: string, offset: number, rows: number) =>
+    getJson(
+      `https://api.smk.dk/api/v1/art/search/?keys=${encodeURIComponent(keys)}` +
+        `&filters=${encodeURIComponent(`[has_image:true],[public_domain:true],[object_names:${kind}]`)}` +
+        `&offset=${offset}&rows=${rows}&lang=en`,
+    );
+  let found = 0;
+  let shape: [string, string] | undefined;
+  for (const candidate of [
+    ['landskab', 'maleri'],
+    ['landscape', 'painting'],
+    ['landskab', 'painting'],
+    ['landscape', 'maleri'],
+  ] as [string, string][]) {
+    const head = await ask(...candidate, 0, 1);
+    found = (isRecord(head) && num(head.found)) || 0;
+    if (found) {
+      shape = candidate;
+      break;
     }
-    if (!isRecord(row) || row.isPublicDomain !== true) continue;
-    const image = str(row.primaryImageSmall);
+  }
+  if (!shape) return;
+  deps.log.debug('smk search', shape.join(' / '), 'finds', found);
+  const ROWS = 25;
+  const body = await ask(...shape, randInt(Math.max(1, found - ROWS)), ROWS);
+  const items = isRecord(body) && Array.isArray(body.items) ? body.items.filter(isRecord) : [];
+
+  for (const row of shuffle(items)) {
+    const iiif = str(row.image_iiif_id);
+    const image = iiif ? `${iiif}/full/!1280,1280/0/default.jpg` : str(row.image_thumbnail);
     if (!image) continue;
+    const titles = Array.isArray(row.titles) ? row.titles.filter(isRecord) : [];
+    const title = titles.find(t => str(t.language).startsWith('en')) ?? titles[0];
+    const maker = Array.isArray(row.production) ? row.production.find(isRecord) : undefined;
+    const made = Array.isArray(row.production_date) ? row.production_date.find(isRecord) : undefined;
     yield {
-      id: `met:${id}`,
-      title: str(row.title),
-      artist: str(row.artistDisplayName),
-      date: str(row.objectDate),
-      museum: 'The Met',
+      id: `smk:${str(row.object_number) || str(row.id)}`,
+      title: str(title?.title),
+      artist: smkName(maker),
+      date: str(made?.period),
+      museum: 'National Gallery of Denmark',
       image,
+      width: num(row.image_width),
+      height: num(row.image_height),
     };
   }
 }
@@ -257,7 +274,7 @@ function toBase64(bytes: Uint8Array): string {
 }
 
 async function download(c: Candidate): Promise<{ mime: string; bytes: Uint8Array } | string> {
-  const res = await get(c.image);
+  const res = await get(c.image, { headers: c.headers });
   const length = Number(res.headers.get('content-length') ?? '0');
   if (length > MAX_BYTES) {
     await res.body?.cancel();
@@ -276,14 +293,14 @@ export function localDay(at = new Date()): string {
   return `${at.getFullYear()}-${pad(at.getMonth() + 1)}-${pad(at.getDate())}`;
 }
 
-export const SOURCES = ['aic', 'cma', 'met'] as const;
+export const SOURCES = ['aic', 'cma', 'smk'] as const;
 
 export type SourceKey = (typeof SOURCES)[number];
 
 function source(key: SourceKey, deps: Deps): AsyncGenerator<Candidate> {
   if (key === 'aic') return artInstitute();
   if (key === 'cma') return cleveland();
-  return met(deps);
+  return smk(deps);
 }
 
 /**
