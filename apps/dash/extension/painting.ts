@@ -1,5 +1,6 @@
 import type { ExtensionContext } from '@bridgething/extension';
 import { describeError, keychainClient } from './http.ts';
+import { jpegSize, shrinkJpeg } from './jpeg.ts';
 
 /** One day's backdrop as the device renders it: the credit, and the image itself as base64. */
 export type Painting = {
@@ -61,7 +62,12 @@ const SCREEN_H = 480;
 const MIN_ASPECT = 1.2;
 const MAX_ASPECT = 2.4;
 const MAX_UPSCALE = 1.25;
-const MAX_BYTES = 900_000;
+const MAX_DOWNLOAD = 4_000_000;
+// a painting crosses to the device as a single base64 json forward and the link drops any message near a megabyte,
+// so the jpeg has to stay well under three quarters of that
+const MAX_SEND = 720_000;
+const MAX_BASE64 = Math.ceil(MAX_SEND / 3) * 4;
+const COVER = { width: SCREEN_W, height: SCREEN_H };
 
 const UA = 'dash-deskthing (https://github.com/e-thanshan/my-deskthing)';
 
@@ -367,25 +373,6 @@ async function* smk(deps: Deps): AsyncGenerator<Candidate> {
   }
 }
 
-/** Pixel size from a baseline or progressive JPEG's frame header. */
-function jpegSize(b: Uint8Array): { width: number; height: number } | null {
-  if (b[0] !== 0xff || b[1] !== 0xd8) return null;
-  let i = 2;
-  while (i + 9 < b.length) {
-    if (b[i] !== 0xff) return null;
-    const marker = b[i + 1];
-    if (marker === 0xff) {
-      i++;
-      continue;
-    }
-    if (marker >= 0xc0 && marker <= 0xcf && marker !== 0xc4 && marker !== 0xc8 && marker !== 0xcc) {
-      return { height: (b[i + 5] << 8) | b[i + 6], width: (b[i + 7] << 8) | b[i + 8] };
-    }
-    i += 2 + ((b[i + 2] << 8) | b[i + 3]);
-  }
-  return null;
-}
-
 function fits(width: number, height: number): string | null {
   const aspect = width / height;
   if (aspect < MIN_ASPECT) return `too tall (${width}x${height})`;
@@ -400,18 +387,27 @@ function toBase64(bytes: Uint8Array): string {
   return btoa(s);
 }
 
-async function download(c: Candidate): Promise<{ mime: string; bytes: Uint8Array } | string> {
+function fromBase64(data: string): Uint8Array {
+  return Uint8Array.from(atob(data), c => c.charCodeAt(0));
+}
+
+async function download(c: Candidate): Promise<{ mime: string; bytes: Uint8Array; fetched: number } | string> {
   const res = await get(c.image, { headers: c.headers });
   const length = Number(res.headers.get('content-length') ?? '0');
-  if (length > MAX_BYTES) {
+  if (length > MAX_DOWNLOAD) {
     await res.body?.cancel();
     return `too heavy (${length} bytes)`;
   }
   const bytes = new Uint8Array(await res.arrayBuffer());
-  if (bytes.length > MAX_BYTES) return `too heavy (${bytes.length} bytes)`;
+  if (bytes.length > MAX_DOWNLOAD) return `too heavy (${bytes.length} bytes)`;
   const size = jpegSize(bytes);
   if (!size) return `not a readable jpeg (${res.headers.get('content-type') ?? 'no type'})`;
-  return fits(size.width, size.height) ?? { mime: 'image/jpeg', bytes };
+  const misfit = fits(size.width, size.height);
+  if (misfit) return misfit;
+  const shrunk = shrinkJpeg(bytes, COVER, MAX_SEND);
+  return shrunk
+    ? { mime: 'image/jpeg', bytes: shrunk, fetched: bytes.length }
+    : `will not compress under ${MAX_SEND} bytes`;
 }
 
 /** Local calendar day on this machine, `YYYY-MM-DD`. */
@@ -470,6 +466,9 @@ export async function pickPainting(
           deps.log.debug('skip', c.id, got);
           continue;
         }
+        if (got.bytes.length !== got.fetched) {
+          deps.log.debug('compressed', c.id, `${kb(got.fetched)} -> ${kb(got.bytes.length)} KB`);
+        }
         return {
           kind: 'painting',
           day,
@@ -518,8 +517,27 @@ export function credit(p: Pick<Painting, 'title' | 'artist' | 'date' | 'museum'>
   return [p.title, [p.artist, p.date].filter(Boolean).join(', '), p.museum].filter(Boolean).join(' - ');
 }
 
+function kb(bytes: number): number {
+  return Math.round(bytes / 1024);
+}
+
 function size(p: Painting): string {
-  return `${p.id}, ${Math.round((p.data.length * 0.75) / 1024)} KB`;
+  return `${p.id}, ${kb(p.data.length * 0.75)} KB`;
+}
+
+/** `p` light enough to send, recompressed when it is not, or null when it cannot be made to fit. */
+function lighten(p: Painting, deps: Deps): Painting | null {
+  if (p.data.length <= MAX_BASE64) return p;
+  try {
+    const shrunk = shrinkJpeg(fromBase64(p.data), COVER, MAX_SEND);
+    if (!shrunk) return null;
+    const light = { ...p, mime: 'image/jpeg', data: toBase64(shrunk) };
+    deps.log.info(`compressed cached painting ${p.id} to ${size(light)}`);
+    return light;
+  } catch (err) {
+    deps.log.warn('could not compress cached painting', p.id, describeError(err));
+    return null;
+  }
 }
 
 /**
@@ -621,9 +639,17 @@ export function startPainting(ctx: Deps, onChange: (message: PaintingMessage, fr
 
   void (async () => {
     try {
-      const cached = toPainting(await ctx.kv.get(CURRENT_KEY));
+      const stored = toPainting(await ctx.kv.get(CURRENT_KEY));
+      const cached = stored && lighten(stored, ctx);
+      if (cached !== stored) await ctx.kv.set(CURRENT_KEY, cached);
       const stack = (await ctx.kv.get(PREVIOUS_KEY)) as unknown;
-      if (Array.isArray(stack)) previous = stack.map(toPainting).filter((p): p is Painting => p !== null);
+      if (Array.isArray(stack)) {
+        const loaded = stack.map(toPainting).filter((p): p is Painting => p !== null);
+        previous = loaded.map(p => lighten(p, ctx)).filter((p): p is Painting => p !== null);
+        if (previous.length !== loaded.length || previous.some((p, i) => p !== loaded[i])) {
+          await ctx.kv.set(PREVIOUS_KEY, previous);
+        }
+      }
       if (cached && !current) {
         current = cached;
         onChange(message()!, false);

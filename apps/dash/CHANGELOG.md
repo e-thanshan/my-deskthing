@@ -1,5 +1,24 @@
 # dash
 
+## 0.18.1
+
+the painting crosses the cable as one message, and the link between the computer and the car thing
+drops any message near a megabyte. every painting until now had come in under that, and the one
+picked on 4 november did not. the link fell over while carrying it, came back, offered the same
+painting, was asked for it again and fell over again, so with dash on screen the car thing kept
+disconnecting and reconnecting a second later.
+
+the computer now shrinks each painting before sending it, down to the smallest size that still
+covers the 800 by 480 screen, which is all the screen ever showed of it anyway, and re-encodes it.
+each source pixel is averaged into the ones it lands on rather than sampled, so brushwork and canvas
+grain stay put instead of shimmering into moire. that one painting went from 841 KB to 132 KB and
+looks the same on the screen. should a painting still come out heavy, the quality steps down until
+it fits, so no painting is turned away for its weight any more, and the museums' images are allowed
+to arrive at up to 4 MB.
+
+a painting the computer had already cached too big to send, today's included, is compressed the
+same way when the extension starts, which ends the loop as soon as this version is installed.
+
 ## 0.18.0
 
 preset 3 belongs to the painting now. hold it for half a second and everything but the painting
