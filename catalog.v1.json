@@ -1,7 +1,7 @@
 {
   "$schema": "https://apps.bridgething.com/schemas/catalog/v1.json",
   "schema": "catalog.v1",
-  "updated_at": "2026-11-04T19:35:28.994Z",
+  "updated_at": "2026-11-05T18:19:10.950Z",
   "repo": {
     "name": "Eshan's Car Thing Apps",
     "description": "Webapps for Eshan's Spotify Car Thing.",
@@ -18,6 +18,40 @@
       "homepage": "https://github.com/e-thanshan/my-deskthing",
       "source": "https://github.com/e-thanshan/my-deskthing",
       "versions": [
+        {
+          "version": "0.19.0",
+          "released_at": "2026-11-05T18:19:10.947Z",
+          "download": {
+            "url": "https://e-thanshan.github.io/my-deskthing/r/01a05e05-e70d-7273-8674-39fe176819b2/0.19.0.zip",
+            "size": 1303808,
+            "sha256": "6ffe5fc734696b6e1b16a5b55db0d3215b8dab4b9312dda809e5c135d418ade7"
+          },
+          "settings": {
+            "url": "https://e-thanshan.github.io/my-deskthing/s/01a05e05-e70d-7273-8674-39fe176819b2/0.19.0.html",
+            "size": 26911,
+            "sha256": "ac6b1d3b7c3857f8b6e87cb2a04f4623abaf200ecade3e2035489f747162b683"
+          },
+          "permissions": [],
+          "extension": {
+            "desktop": true,
+            "permissions": [
+              "run:security",
+              "net:api.anthropic.com",
+              "net:api.artic.edu",
+              "net:www.artic.edu",
+              "net:openaccess-api.clevelandart.org",
+              "net:openaccess-cdn.clevelandart.org",
+              "net:api.smk.dk",
+              "net:iip.smk.dk",
+              "env:HOME",
+              "write:~/dash-paintings.md",
+              "read:~/Library/Application Support/dash-inputcount",
+              "write:~/Library/Application Support/dash-inputcount"
+            ]
+          },
+          "min_libbridgething_version": "0.12.1",
+          "changelog": "the drinks and listened totals lived only on the car thing, in the storage it gives each webapp,\nand uninstalling dash deletes that storage along with the app. keys and scrolled came through a\nreinstall untouched because the computer counts those, and now the computer keeps a copy of the\nother two as well.\n\nthe extension writes them to `stats.json`, next to the input odometer in\n`~/Library/Application Support/dash-inputcount`. whenever dash opens with the desktop app running,\nthe car thing reads that file and keeps the higher of its own number and the file's for each\ntotal, so a fresh install picks up where the old one left off. anything counted before the file\nis read is added on top rather than lost. the file only ever goes up, so it is safe to raise a\nnumber in it by hand. if a hand edit leaves it unreadable, the extension leaves it alone and says\nso in the desktop app's log rather than writing over it.\n\nthe extension could already read the odometer's file, and that grant now covers the whole folder,\nfor reading and for writing, which the desktop app asks you to confirm. writing to the folder lets\nthe extension create it on a computer that never installed the odometer, and replace the file in\na single step so a half-written copy never exists."
+        },
         {
           "version": "0.18.1",
           "released_at": "2026-11-04T19:35:28.859Z",
@@ -45,7 +79,8 @@
               "net:iip.smk.dk",
               "env:HOME",
               "write:~/dash-paintings.md",
-              "read:~/Library/Application Support/dash-inputcount/counts.json"
+              "read:~/Library/Application Support/dash-inputcount",
+              "write:~/Library/Application Support/dash-inputcount"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -78,7 +113,8 @@
               "net:iip.smk.dk",
               "env:HOME",
               "write:~/dash-paintings.md",
-              "read:~/Library/Application Support/dash-inputcount/counts.json"
+              "read:~/Library/Application Support/dash-inputcount",
+              "write:~/Library/Application Support/dash-inputcount"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -111,7 +147,8 @@
               "net:iip.smk.dk",
               "env:HOME",
               "write:~/dash-paintings.md",
-              "read:~/Library/Application Support/dash-inputcount/counts.json"
+              "read:~/Library/Application Support/dash-inputcount",
+              "write:~/Library/Application Support/dash-inputcount"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -144,7 +181,8 @@
               "net:iip.smk.dk",
               "env:HOME",
               "write:~/dash-paintings.md",
-              "read:~/Library/Application Support/dash-inputcount/counts.json"
+              "read:~/Library/Application Support/dash-inputcount",
+              "write:~/Library/Application Support/dash-inputcount"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -177,7 +215,8 @@
               "net:iip.smk.dk",
               "env:HOME",
               "write:~/dash-paintings.md",
-              "read:~/Library/Application Support/dash-inputcount/counts.json"
+              "read:~/Library/Application Support/dash-inputcount",
+              "write:~/Library/Application Support/dash-inputcount"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -210,7 +249,8 @@
               "net:iip.smk.dk",
               "env:HOME",
               "write:~/dash-paintings.md",
-              "read:~/Library/Application Support/dash-inputcount/counts.json"
+              "read:~/Library/Application Support/dash-inputcount",
+              "write:~/Library/Application Support/dash-inputcount"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -243,7 +283,8 @@
               "net:iip.smk.dk",
               "env:HOME",
               "write:~/dash-paintings.md",
-              "read:~/Library/Application Support/dash-inputcount/counts.json"
+              "read:~/Library/Application Support/dash-inputcount",
+              "write:~/Library/Application Support/dash-inputcount"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -276,7 +317,8 @@
               "net:iip.smk.dk",
               "env:HOME",
               "write:~/dash-paintings.md",
-              "read:~/Library/Application Support/dash-inputcount/counts.json"
+              "read:~/Library/Application Support/dash-inputcount",
+              "write:~/Library/Application Support/dash-inputcount"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -309,7 +351,8 @@
               "net:iip.smk.dk",
               "env:HOME",
               "write:~/dash-paintings.md",
-              "read:~/Library/Application Support/dash-inputcount/counts.json"
+              "read:~/Library/Application Support/dash-inputcount",
+              "write:~/Library/Application Support/dash-inputcount"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -342,7 +385,8 @@
               "net:iip.smk.dk",
               "env:HOME",
               "write:~/dash-paintings.md",
-              "read:~/Library/Application Support/dash-inputcount/counts.json"
+              "read:~/Library/Application Support/dash-inputcount",
+              "write:~/Library/Application Support/dash-inputcount"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -375,7 +419,8 @@
               "net:iip.smk.dk",
               "env:HOME",
               "write:~/dash-paintings.md",
-              "read:~/Library/Application Support/dash-inputcount/counts.json"
+              "read:~/Library/Application Support/dash-inputcount",
+              "write:~/Library/Application Support/dash-inputcount"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -408,7 +453,8 @@
               "net:iip.smk.dk",
               "env:HOME",
               "write:~/dash-paintings.md",
-              "read:~/Library/Application Support/dash-inputcount/counts.json"
+              "read:~/Library/Application Support/dash-inputcount",
+              "write:~/Library/Application Support/dash-inputcount"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -441,7 +487,8 @@
               "net:iip.smk.dk",
               "env:HOME",
               "write:~/dash-paintings.md",
-              "read:~/Library/Application Support/dash-inputcount/counts.json"
+              "read:~/Library/Application Support/dash-inputcount",
+              "write:~/Library/Application Support/dash-inputcount"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -474,7 +521,8 @@
               "net:iip.smk.dk",
               "env:HOME",
               "write:~/dash-paintings.md",
-              "read:~/Library/Application Support/dash-inputcount/counts.json"
+              "read:~/Library/Application Support/dash-inputcount",
+              "write:~/Library/Application Support/dash-inputcount"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -507,7 +555,8 @@
               "net:iip.smk.dk",
               "env:HOME",
               "write:~/dash-paintings.md",
-              "read:~/Library/Application Support/dash-inputcount/counts.json"
+              "read:~/Library/Application Support/dash-inputcount",
+              "write:~/Library/Application Support/dash-inputcount"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -540,7 +589,8 @@
               "net:iip.smk.dk",
               "env:HOME",
               "write:~/dash-paintings.md",
-              "read:~/Library/Application Support/dash-inputcount/counts.json"
+              "read:~/Library/Application Support/dash-inputcount",
+              "write:~/Library/Application Support/dash-inputcount"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -573,7 +623,8 @@
               "net:iip.smk.dk",
               "env:HOME",
               "write:~/dash-paintings.md",
-              "read:~/Library/Application Support/dash-inputcount/counts.json"
+              "read:~/Library/Application Support/dash-inputcount",
+              "write:~/Library/Application Support/dash-inputcount"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -606,7 +657,8 @@
               "net:iip.smk.dk",
               "env:HOME",
               "write:~/dash-paintings.md",
-              "read:~/Library/Application Support/dash-inputcount/counts.json"
+              "read:~/Library/Application Support/dash-inputcount",
+              "write:~/Library/Application Support/dash-inputcount"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -639,7 +691,8 @@
               "net:iip.smk.dk",
               "env:HOME",
               "write:~/dash-paintings.md",
-              "read:~/Library/Application Support/dash-inputcount/counts.json"
+              "read:~/Library/Application Support/dash-inputcount",
+              "write:~/Library/Application Support/dash-inputcount"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -672,7 +725,8 @@
               "net:iip.smk.dk",
               "env:HOME",
               "write:~/dash-paintings.md",
-              "read:~/Library/Application Support/dash-inputcount/counts.json"
+              "read:~/Library/Application Support/dash-inputcount",
+              "write:~/Library/Application Support/dash-inputcount"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -705,7 +759,8 @@
               "net:iip.smk.dk",
               "env:HOME",
               "write:~/dash-paintings.md",
-              "read:~/Library/Application Support/dash-inputcount/counts.json"
+              "read:~/Library/Application Support/dash-inputcount",
+              "write:~/Library/Application Support/dash-inputcount"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -738,7 +793,8 @@
               "net:iip.smk.dk",
               "env:HOME",
               "write:~/dash-paintings.md",
-              "read:~/Library/Application Support/dash-inputcount/counts.json"
+              "read:~/Library/Application Support/dash-inputcount",
+              "write:~/Library/Application Support/dash-inputcount"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -771,7 +827,8 @@
               "net:iip.smk.dk",
               "env:HOME",
               "write:~/dash-paintings.md",
-              "read:~/Library/Application Support/dash-inputcount/counts.json"
+              "read:~/Library/Application Support/dash-inputcount",
+              "write:~/Library/Application Support/dash-inputcount"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -804,7 +861,8 @@
               "net:iip.smk.dk",
               "env:HOME",
               "write:~/dash-paintings.md",
-              "read:~/Library/Application Support/dash-inputcount/counts.json"
+              "read:~/Library/Application Support/dash-inputcount",
+              "write:~/Library/Application Support/dash-inputcount"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -837,7 +895,8 @@
               "net:iip.smk.dk",
               "env:HOME",
               "write:~/dash-paintings.md",
-              "read:~/Library/Application Support/dash-inputcount/counts.json"
+              "read:~/Library/Application Support/dash-inputcount",
+              "write:~/Library/Application Support/dash-inputcount"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -870,7 +929,8 @@
               "net:iip.smk.dk",
               "env:HOME",
               "write:~/dash-paintings.md",
-              "read:~/Library/Application Support/dash-inputcount/counts.json"
+              "read:~/Library/Application Support/dash-inputcount",
+              "write:~/Library/Application Support/dash-inputcount"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -903,7 +963,8 @@
               "net:iip.smk.dk",
               "env:HOME",
               "write:~/dash-paintings.md",
-              "read:~/Library/Application Support/dash-inputcount/counts.json"
+              "read:~/Library/Application Support/dash-inputcount",
+              "write:~/Library/Application Support/dash-inputcount"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -936,7 +997,8 @@
               "net:iip.smk.dk",
               "env:HOME",
               "write:~/dash-paintings.md",
-              "read:~/Library/Application Support/dash-inputcount/counts.json"
+              "read:~/Library/Application Support/dash-inputcount",
+              "write:~/Library/Application Support/dash-inputcount"
             ]
           },
           "min_libbridgething_version": "0.12.1",
@@ -969,7 +1031,8 @@
               "net:iip.smk.dk",
               "env:HOME",
               "write:~/dash-paintings.md",
-              "read:~/Library/Application Support/dash-inputcount/counts.json"
+              "read:~/Library/Application Support/dash-inputcount",
+              "write:~/Library/Application Support/dash-inputcount"
             ]
           },
           "min_libbridgething_version": "0.12.1",
