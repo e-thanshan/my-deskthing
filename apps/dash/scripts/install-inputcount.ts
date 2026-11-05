@@ -77,6 +77,7 @@ function uninstall(): void {
   }
   console.log(`unloaded ${LABEL} and removed its binary`);
   console.log(`the odometer at ${countsPath} was left alone; delete ${dataDir} to drop it too`);
+  console.log(`that also holds stats.json, the backup of the drinks and listening totals, so keep it if you want those`);
   console.log('remove the leftover entry under System Settings > Privacy & Security > Input Monitoring');
 }
 

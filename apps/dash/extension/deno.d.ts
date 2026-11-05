@@ -26,6 +26,12 @@ declare namespace Deno {
 
   function writeTextFile(path: string, data: string, options?: { append?: boolean; createNew?: boolean }): Promise<void>;
 
+  function mkdir(path: string, options?: { recursive?: boolean }): Promise<void>;
+
+  function rename(oldpath: string, newpath: string): Promise<void>;
+
+  const errors: { NotFound: new (...args: never[]) => Error };
+
   const env: { get(key: string): string | undefined };
 
   interface HttpClient {

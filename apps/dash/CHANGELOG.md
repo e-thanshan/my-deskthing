@@ -1,5 +1,25 @@
 # dash
 
+## 0.19.0
+
+the drinks and listened totals lived only on the car thing, in the storage it gives each webapp,
+and uninstalling dash deletes that storage along with the app. keys and scrolled came through a
+reinstall untouched because the computer counts those, and now the computer keeps a copy of the
+other two as well.
+
+the extension writes them to `stats.json`, next to the input odometer in
+`~/Library/Application Support/dash-inputcount`. whenever dash opens with the desktop app running,
+the car thing reads that file and keeps the higher of its own number and the file's for each
+total, so a fresh install picks up where the old one left off. anything counted before the file
+is read is added on top rather than lost. the file only ever goes up, so it is safe to raise a
+number in it by hand. if a hand edit leaves it unreadable, the extension leaves it alone and says
+so in the desktop app's log rather than writing over it.
+
+the extension could already read the odometer's file, and that grant now covers the whole folder,
+for reading and for writing, which the desktop app asks you to confirm. writing to the folder lets
+the extension create it on a computer that never installed the odometer, and replace the file in
+a single step so a half-written copy never exists.
+
 ## 0.18.1
 
 the painting crosses the cable as one message, and the link between the computer and the car thing

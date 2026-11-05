@@ -1,8 +1,9 @@
-import { asJson, defineExtension, json } from '@bridgething/extension';
+import { asJson, defineExtension, json, type Device } from '@bridgething/extension';
 import { closeHttpClient, describeError, keychainClient } from './http.ts';
 import { startInputCounts, type InputCounter } from './inputcount.ts';
 import { startPainting, type PaintingFeed } from './painting.ts';
 import { savePainting } from './saved.ts';
+import { startStatsBackup } from './stats.ts';
 
 const ENDPOINT = 'https://api.anthropic.com/api/oauth/usage';
 const KEYCHAIN_SERVICE = 'Claude Code-credentials';
@@ -134,10 +135,15 @@ defineExtension({
     const feed = startPainting(ctx, (painting, fresh) => ctx.broadcast(fresh ? json(painting) : offer(painting.id)));
     paintings = feed;
 
+    const stats = startStatsBackup(ctx);
+    const sendStats = (device: Device) =>
+      void stats.read().then(backup => backup && device.send(json(backup)));
+
     // a forward only reaches the active webapp, so resend whenever a device turns up
     ctx.on('device', event => {
       if (!event.device.active) return;
       push();
+      sendStats(event.device);
       event.device.send(json(counter.current()));
       const painting = feed.current();
       if (painting) event.device.send(offer(painting.id));
@@ -149,6 +155,16 @@ defineExtension({
       const asked = asJson(message) as Record<string, unknown> | undefined;
       if (asked?.kind === 'input-counts-request') {
         device.send(json(counter.current()));
+        return;
+      }
+      if (asked?.kind === 'stats-backup-request') {
+        sendStats(device);
+        return;
+      }
+      if (asked?.kind === 'stats-backup-save') {
+        const { listenedMs, drinks } = asked;
+        const valid = (n: unknown): n is number => typeof n === 'number' && Number.isFinite(n) && n >= 0;
+        if (valid(listenedMs) && valid(drinks)) void stats.save({ listenedMs, drinks });
         return;
       }
       if (asked?.kind === 'painting-request') {
